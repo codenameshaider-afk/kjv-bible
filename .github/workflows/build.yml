@@ -4,6 +4,7 @@
           cp icon-only.png icon-foreground.png icon-background.png assets/
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/share @capacitor/clipboard @capacitor/app
           npm install --save-dev @capacitor/assets
           npx cap init "Bible" com.diego.kjvbible --web-dir=www
           npx cap add android
