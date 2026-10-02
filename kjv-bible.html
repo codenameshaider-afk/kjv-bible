@@ -12,8 +12,8 @@ html,body{margin:0;height:100%;touch-action:pan-y}
 body{background:var(--bg);color:var(--ink);font-family:Georgia,"Noto Serif","DejaVu Serif",serif;-webkit-text-size-adjust:100%}
 button{font:inherit;color:inherit;background:var(--btn);border:0;border-radius:10px;min-height:48px;min-width:48px;padding:0 14px;cursor:pointer}
 button:focus-visible,input:focus-visible{outline:3px solid #3b7bd8;outline-offset:2px}
-header{position:fixed;top:0;left:0;right:0;transition:transform .25s ease;z-index:5;display:flex;gap:8px;align-items:center;padding:8px 10px;background:var(--bar);color:var(--barink)}
-header button{background:transparent;color:var(--barink);border:1px solid rgba(255,255,255,.3)}
+header{position:fixed;top:0;left:0;right:0;transition:transform .25s ease;z-index:5;display:flex;align-items:center;padding:8px 7px;background:var(--bar);color:var(--barink)}
+header button{margin:0 3px;background:transparent;color:var(--barink);border:1px solid rgba(255,255,255,.3)}
 #title{flex:1;font-size:1.15rem;font-weight:bold;text-align:left;border:0!important;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 main{max-width:42rem;margin:0 auto;padding:84px 18px 120px}
 body.hh header{transform:translateY(-130%)}
@@ -21,7 +21,7 @@ body.hh header{transform:translateY(-130%)}
 #read sup{font-size:.55em;color:var(--mute);margin-right:.35em;font-family:system-ui,sans-serif}
 #read p.hl{background:var(--hl);border-radius:6px}
 #read h1{font-size:1.6rem;margin:.2em 0 .8em}
-.pager{display:flex;gap:18px;margin:32px 8px 0}.pager button{flex:1;min-height:78px;font-size:1.1rem;line-height:1.35;font-weight:bold}.pager small{display:block;font-weight:normal;font-size:.85em;color:var(--mute)}
+.pager{display:flex;margin:32px 0 0}.pager button{flex:1;margin:0 9px;min-height:78px;font-size:1.1rem;line-height:1.35;font-weight:bold}.pager small{display:block;font-weight:normal;font-size:.85em;color:var(--mute)}
 .panel{display:none}.panel.on{display:block}
 .list button{display:block;width:100%;text-align:left;margin:0 0 6px;font-size:1.2rem;min-height:54px}
 .list h2{font-size:1rem;color:var(--mute);margin:18px 0 8px;font-weight:normal}
@@ -37,17 +37,17 @@ mark{background:var(--hl);color:inherit;border-radius:3px}
 #read p.sel{background:var(--hl);border-radius:6px}
 #read p{scroll-margin-bottom:420px}
 body.sh main{padding-bottom:420px}
-#sheet{display:none;position:fixed;left:0;right:0;bottom:0;z-index:9;background:var(--bg);border-top:3px solid var(--bar);padding:12px 14px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(0,0,0,.25)}
+#sheet{display:none;position:fixed;left:0;right:0;bottom:0;z-index:9;background:var(--bg);border-top:3px solid var(--bar);padding:12px 14px 14px;padding:12px 14px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(0,0,0,.25)}
 #sheet.on{display:block}
 .sh-t{font-weight:bold;font-size:1.1rem;margin:0 0 10px;text-align:center}
 .big{display:block;width:100%;min-height:60px;margin:0 0 8px;font-size:1.25rem;font-weight:bold}
 .big.close{background:var(--bar);color:var(--barink)}
-#sheet .row{display:flex;gap:8px}#sheet .row .big{margin:0;flex:1}
+#sheet .row{display:flex;margin:0 -4px}#sheet .row .big{margin:0 4px;flex:1}
 #toast{display:none;position:fixed;left:50%;top:76px;transform:translateX(-50%);z-index:10;background:var(--bar);color:var(--barink);padding:12px 18px;border-radius:10px;font-size:1.1rem;font-family:system-ui,sans-serif}
 #toast.on{display:block}
-#hint{display:flex;gap:10px;align-items:center;background:var(--btn);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-family:system-ui,sans-serif}
-#hint span{flex:1}
-.tabs{display:flex;gap:8px;margin:0 0 10px}.tabs .big{margin:0;flex:1;min-height:52px;font-size:1.05rem}
+#hint{display:flex;align-items:center;background:var(--btn);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-family:system-ui,sans-serif}
+#hint span{flex:1}#hint button{margin-left:10px}
+.tabs{display:flex;margin:0 -4px 10px}.tabs .big{margin:0 4px;flex:1;min-height:52px;font-size:1.05rem}
 .tabs .big.on{background:var(--bar);color:var(--barink)}
 .def{max-height:40vh;overflow-y:auto;white-space:pre-wrap;line-height:1.5;font-size:calc(var(--fs,26px)*.8);margin:0 0 12px;padding:10px 12px;border:2px solid var(--line);border-radius:10px}
 .def small{display:block;font-family:system-ui,sans-serif;color:var(--mute);font-size:.6em;margin-bottom:6px}
