@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Bible</title>
 <style>
-:root{--bg:#f7f5ef;--ink:#1d2433;--mute:#5d6577;--line:#d9d5c8;--bar:#1d2b4a;--barink:#f7f5ef;--hl:#ffe9a8;--btn:#e9e5d6;box-sizing:border-box}
-[data-theme=night]{--bg:#12161f;--ink:#e8d9b8;--mute:#9a97a0;--line:#2b3244;--bar:#0b0e15;--barink:#e8d9b8;--hl:#4a3d12;--btn:#232a3a}
+:root{--bg:#f7f5ef;--ink:#1d2433;--mute:#5d6577;--line:#d9d5c8;--bar:#1d2b4a;--barink:#f7f5ef;--hl:#ffe9a8;--btn:#e9e5d6;--h1:rgba(255,205,0,.5);--h2:rgba(60,185,85,.4);--h3:rgba(60,150,240,.38);--h4:rgba(240,90,160,.36);box-sizing:border-box}
+[data-theme=night]{--bg:#12161f;--ink:#e8d9b8;--mute:#9a97a0;--line:#2b3244;--bar:#0b0e15;--barink:#e8d9b8;--hl:#4a3d12;--btn:#232a3a;--h1:rgba(255,205,0,.32);--h2:rgba(60,185,85,.32);--h3:rgba(60,150,240,.36);--h4:rgba(240,90,160,.36)}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;touch-action:pan-y}
 body{background:var(--bg);color:var(--ink);font-family:Georgia,"Noto Serif","DejaVu Serif",serif;-webkit-text-size-adjust:100%}
@@ -14,12 +14,15 @@ button{font:inherit;color:inherit;background:var(--btn);border:0;border-radius:1
 button:focus-visible,input:focus-visible{outline:3px solid #3b7bd8;outline-offset:2px}
 header{position:fixed;top:0;left:0;right:0;transition:transform .25s ease;z-index:5;display:flex;align-items:center;padding:8px 7px;background:var(--bar);color:var(--barink)}
 header button{margin:0 3px;background:transparent;color:var(--barink);border:1px solid rgba(255,255,255,.3)}
-#title{flex:1;min-width:0;font-size:1.15rem;font-weight:bold;text-align:left;border:0!important;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;line-height:1.15}#title span{max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#title small{font-size:.68rem;font-weight:normal;opacity:.85;font-family:system-ui,sans-serif}
+#title{flex:1;min-width:0;font-size:1.15rem;font-weight:bold;text-align:left;border:0!important;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;line-height:1.15}#title span{max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#tt::after{content:' \25BE';font-size:.8em;opacity:.8}
+#title small{font-size:.68rem;font-weight:normal;opacity:.85;font-family:system-ui,sans-serif}
 main{max-width:42rem;margin:0 auto;padding:84px 18px 120px}
 body.hh header{transform:translateY(-130%)}
 .chap{font-size:var(--fs,26px);line-height:1.6}.chap.lines .vs{display:block;margin:0 0 .7em}.chap.para .vs{display:inline}.chap.para sup{margin-left:.2em}.vs{-webkit-box-decoration-break:clone;box-decoration-break:clone;scroll-margin-bottom:420px}
 #read sup{font-size:.55em;color:var(--mute);margin-right:.35em;font-family:system-ui,sans-serif}
+#read .vs.h1{background:var(--h1);border-radius:6px}#read .vs.h2{background:var(--h2);border-radius:6px}#read .vs.h3{background:var(--h3);border-radius:6px}#read .vs.h4{background:var(--h4);border-radius:6px}
 #read .vs.hl{background:var(--hl);border-radius:6px}
+#read .vs.bm::before{content:"";display:inline-block;width:.42em;height:.8em;margin-right:.3em;background:#c0392b;clip-path:polygon(0 0,100% 0,100% 100%,50% 70%,0 100%);vertical-align:-.05em}
 #read h1{font-size:1.6rem;margin:.2em 0 .8em}
 .pager{display:flex;margin:32px 0 0}.pager button{flex:1;margin:0 9px;min-height:78px;font-size:1.1rem;line-height:1.35;font-weight:bold}.pager small{display:block;font-weight:normal;font-size:.85em;color:var(--mute)}
 .panel{display:none}.panel.on{display:block}
@@ -62,18 +65,26 @@ body.sh main{padding-bottom:70vh}
 .szv{flex:0 0 70px;text-align:center;line-height:54px;font-weight:bold;font-family:system-ui,sans-serif}
 .pb{display:block;height:.8em}.chap.lines .pb{height:.5em}.chap.lines .pb.mid{display:none}
 .sec{font-size:.78em;font-family:system-ui,sans-serif;font-weight:bold;color:var(--mute);margin:1.2em 0 .35em;line-height:1.3}
+header button{padding:0 7px;font-size:.9rem;margin:0 2px}#title{padding:0 4px;font-size:1rem}
+.mk{display:flex;margin:0 0 8px}.mk .mkgo{flex:1;min-width:0;text-align:left;display:block;min-height:64px;padding:10px 12px;line-height:1.4;font-size:1.05rem}
+.mk .mkgo b{display:block;font-family:system-ui,sans-serif;font-size:.95rem;color:var(--mute)}.mk .mkx{margin-left:6px;font-size:.9rem;font-family:system-ui,sans-serif;padding:0 10px}
+.dot{display:inline-block;width:.8em;height:.8em;border-radius:50%;margin-left:.5em;vertical-align:-.05em;background:linear-gradient(var(--c),var(--c)),var(--bg);border:1px solid var(--line)}
+.mrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 10px}.mrow button{min-height:44px;font-size:.95rem;font-family:system-ui,sans-serif}
+.swb{background:linear-gradient(var(--c),var(--c)),var(--bg)!important;font-size:1rem!important}.swb.on{outline:3px solid var(--ink)}
+#sheet .row.sw .big{padding:0 4px}#sheet .swb.on{color:var(--ink)}
 </style>
 </head>
 <body>
 <header>
-  <button id="menu" aria-label="Choose book and chapter">Books</button>
   <button id="title" aria-label="Choose book and chapter"></button>
   <button id="find" aria-label="Search">Search</button>
+  <button id="mk" aria-label="Bookmarks and highlights">Marks</button>
   <button id="disp" aria-label="Display settings: text size, theme, layout">Display</button>
 </header>
 <main>
   <section id="read" class="panel on"></section>
   <section id="nav" class="panel list"></section>
+  <section id="marks" class="panel"></section>
   <section id="search" class="panel">
     <input id="q" type="search" placeholder="Search words, e.g. shepherd" autocomplete="off">
     <div id="res"></div>
@@ -85,15 +96,15 @@ const NAMES=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Ju
 const VERS=[['kjv','KJV','King James Version'],['bsb','BSB','Berean Standard Bible'],['web','WEB','World English Bible'],['asv','ASV','American Standard Version']];
 const BOOKS=NAMES.map(n=>[n,[]]);
 const $=id=>document.getElementById(id);
-const S={b:42,c:0,fs:26,theme:'day',hl:0,v:'kjv',layout:'lines',vn:true,ch:true,sh:true};
+const S={b:42,c:0,fs:26,theme:'day',hl:0,v:'kjv',layout:'lines',vn:true,ch:true,sh:true,mt:'bm',ms:'bible'};
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 try{Object.assign(S,JSON.parse(store.get('kjv')||'{}'))}catch(e){}
 S.hl=0;
 if(!VERS.some(x=>x[0]===S.v))S.v='kjv';
 if(!(S.b>=0&&S.b<66))S.b=42;
-if(S.layout!=='para')S.layout='lines';S.vn=S.vn!==false;S.ch=S.ch!==false;S.sh=S.sh!==false;
+if(S.layout!=='para')S.layout='lines';S.vn=S.vn!==false;S.ch=S.ch!==false;S.sh=S.sh!==false;if(S.mt!=='hl')S.mt='bm';if(S.ms!=='new')S.ms='bible';
 if(S.theme!=='night')S.theme='day';S.fs=Math.min(48,Math.max(16,+S.fs||26));
-const save=()=>store.set('kjv',JSON.stringify({b:S.b,c:S.c,fs:S.fs,theme:S.theme,v:S.v,layout:S.layout,vn:S.vn,ch:S.ch,sh:S.sh}));
+const save=()=>store.set('kjv',JSON.stringify({b:S.b,c:S.c,fs:S.fs,theme:S.theme,v:S.v,layout:S.layout,vn:S.vn,ch:S.ch,sh:S.sh,mt:S.mt,ms:S.ms}));
 const VL=()=>VERS.find(x=>x[0]===S.v)[1];
 const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error(src));document.head.appendChild(s)});
 const loaded={};
@@ -104,8 +115,19 @@ async function useVersion(code){
   S.v=code;
 }
 const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-function show(p){closeSheet();document.body.classList.remove('hh');['read','nav','search'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
+function show(p){closeSheet();document.body.classList.remove('hh');['read','nav','search','marks'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
 function applyLook(){document.documentElement.dataset.theme=S.theme;document.documentElement.style.setProperty('--fs',S.fs+'px')}
+let MK={};
+try{MK=JSON.parse(store.get('marks')||'{}')}catch(e){MK={}}
+if(!MK||typeof MK!=='object'||Array.isArray(MK))MK={};
+Object.keys(MK).forEach(k=>{const e=MK[k];
+  if(!/^\d+\.\d+\.\d+$/.test(k)||!e||typeof e!=='object'){delete MK[k];return}
+  const o={};if(e.h>=1&&e.h<=4){o.h=+e.h|0;o.ht=+e.ht||0}if(+e.b>0)o.b=+e.b;
+  if(o.h||o.b)MK[k]=o;else delete MK[k]});
+const mkey=(b,c,v)=>b+'.'+c+'.'+v;
+const mksave=()=>store.set('marks',JSON.stringify(MK));
+const mcls=n=>{const e=MK[mkey(S.b,S.c,n)];return e?(e.h?' h'+e.h:'')+(e.b?' bm':''):''};
+function paintMarks(){document.querySelectorAll('#read .vs').forEach(p=>{const e=MK[mkey(S.b,S.c,+p.dataset.v)]||{};for(let i=1;i<=4;i++)p.classList.toggle('h'+i,e.h===i);p.classList.toggle('bm',!!e.b)})}
 function drawChapter(){
   const [name,chs]=BOOKS[S.b],vs=chs[S.c];
   $('title').innerHTML='<span id="tt">'+name+' '+(S.c+1)+'</span><small id="tv">'+VL()+'</small>';
@@ -121,7 +143,7 @@ function drawChapter(){
     let body=words(v);
     const mid=offs.filter(o=>o>0&&o<v.length);
     if(mid.length){let a=0;body='';mid.concat([v.length]).forEach((o,j)=>{body+=(j?'<span class="pb mid"></span>':'')+words(v.slice(a,o).trim());a=o})}
-    h+='<span class="vs'+(S.hl===n?' hl':'')+'" id="v'+n+'" data-v="'+n+'">'+(S.vn?'<sup>'+n+'</sup>':'')+body+'</span> '});
+    h+='<span class="vs'+mcls(n)+(S.hl===n?' hl':'')+'" id="v'+n+'" data-v="'+n+'">'+(S.vn?'<sup>'+n+'</sup>':'')+body+'</span> '});
   h+='</div>';
   const pv=pageNav(-1),nx=pageNav(1),gap='<span style="flex:1"></span>';
   h+='<div class="pager">'+(pv?'<button id="prev">&larr; '+pv[0]+'<small>'+pv[1]+'</small></button>':gap)+(nx?'<button id="next">'+nx[0]+' &rarr;<small>'+nx[1]+'</small></button>':gap)+'</div>';
@@ -131,7 +153,7 @@ function drawChapter(){
 }
 function read(){
   drawChapter();show('read');
-  if(S.hl){const e=$('v'+S.hl);if(e)e.scrollIntoView({block:'center'})}
+  if(S.hl){const e=$('v'+S.hl);if(e)e.scrollIntoView({block:'center'});clearTimeout(read.t);read.t=setTimeout(()=>{S.hl=0;document.querySelectorAll('#read .vs.hl').forEach(x=>x.classList.remove('hl'))},3000)}
   save();
 }
 function rerenderChapter(){
@@ -192,7 +214,7 @@ async function switchVersion(code){
   }
   read();toast('Now reading the '+VL());
 }
-$('menu').onclick=$('title').onclick=bookList;
+$('title').onclick=bookList;
 $('find').onclick=()=>{show('search');$('q').focus()};
 $('q').oninput=()=>{clearTimeout(timer);timer=setTimeout(doSearch,250)};
 $('disp').onclick=showDisplay;
@@ -209,26 +231,96 @@ async function copy(t){let ok=false;try{const C=plug('Clipboard');if(C){await C.
   toast(ok?'Copied':'Could not copy')}
 async function share(t){const P=plug('Share');try{if(P)return await P.share({text:t});if(navigator.share)return await navigator.share({text:t})}catch(e){return}await copy(t)}
 function open(){$('sheet').className='on';document.body.classList.add('sh')}
+let lastWord='';
+const rng=(lo,hi)=>{const a=[],ch=BOOKS[S.b][1][S.c];for(let v=lo;v<=hi;v++)if(ch[v-1])a.push(v);return a};
+function applyHl(lo,hi,col){
+  rng(lo,hi).forEach(v=>{const k=mkey(S.b,S.c,v),e=MK[k]||(MK[k]={});if(col){e.h=col;e.ht=Date.now()}else{delete e.h;delete e.ht}if(!e.h&&!e.b)delete MK[k]});
+  mksave();paintMarks()}
+const allBm=(lo,hi)=>{const r=rng(lo,hi);return r.length>0&&r.every(v=>{const e=MK[mkey(S.b,S.c,v)];return e&&e.b})};
+function toggleBm(lo,hi){
+  const rem=allBm(lo,hi),t=Date.now();
+  rng(lo,hi).forEach(v=>{const k=mkey(S.b,S.c,v),e=MK[k]||(MK[k]={});if(rem)delete e.b;else e.b=t;if(!e.h&&!e.b)delete MK[k]});
+  mksave();paintMarks();return !rem}
+const HN=['Yellow','Green','Blue','Pink'];
+const hlOf=(lo,hi)=>{const r=rng(lo,hi),e=r.length&&MK[mkey(S.b,S.c,r[0])];return e&&e.h||0};
+function hlPicker(lo,hi,back){
+  const cur=hlOf(lo,hi);
+  $('sheet').innerHTML='<div class="sh-t">Highlight '+ref(lo,hi)+'</div><div class="row sw">'+HN.map((n,i)=>'<button class="big swb'+(cur===i+1?' on':'')+'" data-c="'+(i+1)+'" style="--c:var(--h'+(i+1)+')">'+n+'</button>').join('')+'</div>'
+    +'<button class="big" id="h-none">Remove highlight</button><div class="row"><button class="big" id="h-back">Back</button><button class="big close" id="h-x">Close</button></div>';
+  open();
+  $('sheet').querySelectorAll('.swb').forEach(b=>b.onclick=()=>{applyHl(lo,hi,+b.dataset.c);closeSheet();toast(HN[+b.dataset.c-1]+' highlight added')});
+  $('h-none').onclick=()=>{applyHl(lo,hi,0);closeSheet();toast('Highlight removed')};
+  $('h-back').onclick=back;$('h-x').onclick=closeSheet;
+}
 function menu(p,word){
-  sel={a:p,lo:p,hi:p};paint();
-  $('sheet').innerHTML='<div class="sh-t">'+ref(p,p)+'</div><button class="big" id="m-def">Meaning of &ldquo;'+esc(word)+'&rdquo;</button><button class="big" id="m-sh">Share verse</button><button class="big" id="m-cp">Copy verse</button><button class="big" id="m-more">Select more verses</button><button class="big close" id="m-x">Close</button>';
+  lastWord=word;sel={a:p,lo:p,hi:p};paint();
+  $('sheet').innerHTML='<div class="sh-t">'+ref(p,p)+'</div><button class="big" id="m-def">Meaning of &ldquo;'+esc(word)+'&rdquo;</button>'
+    +'<div class="row"><button class="big" id="m-hl">Highlight</button><button class="big" id="m-bm">'+(allBm(p,p)?'Remove bookmark':'Add bookmark')+'</button></div>'
+    +'<div class="row"><button class="big" id="m-sh">Share verse</button><button class="big" id="m-cp">Copy verse</button></div>'
+    +'<button class="big" id="m-more">Select more verses</button><button class="big close" id="m-x">Close</button>';
   open();
   $('m-def').onclick=()=>define(p,word);
+  $('m-hl').onclick=()=>hlPicker(p,p,()=>menu(p,word));
+  $('m-bm').onclick=()=>{const on=toggleBm(p,p);closeSheet();toast(on?'Bookmarked '+ref(p,p):'Bookmark removed')};
   $('m-sh').onclick=()=>share(passage(p,p));
   $('m-cp').onclick=()=>copy(passage(p,p));
   $('m-more').onclick=selectBar;
   $('m-x').onclick=closeSheet;
   const v=$('v'+p);if(v)v.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
-const updRef=()=>{$('selref').textContent=ref(sel.lo,sel.hi)+' \u2014 tap verses to extend'};
+const updRef=()=>{$('selref').textContent=ref(sel.lo,sel.hi)+' — tap verses to extend';$('s-bm').textContent=allBm(sel.lo,sel.hi)?'Remove bookmark':'Bookmark'};
 function selectBar(){
   sel.on=true;
-  $('sheet').innerHTML='<div class="sh-t" id="selref"></div><div class="row"><button class="big" id="s-sh">Share</button><button class="big" id="s-cp">Copy</button><button class="big close" id="s-x">Cancel</button></div>';
+  $('sheet').innerHTML='<div class="sh-t" id="selref"></div><div class="row"><button class="big" id="s-hl">Highlight</button><button class="big" id="s-bm">Bookmark</button></div>'
+    +'<div class="row"><button class="big" id="s-sh">Share</button><button class="big" id="s-cp">Copy</button><button class="big close" id="s-x">Cancel</button></div>';
+  open();
+  $('s-hl').onclick=()=>hlPicker(sel.lo,sel.hi,selectBar);
+  $('s-bm').onclick=()=>{const lo=sel.lo,hi=sel.hi,on=toggleBm(lo,hi);closeSheet();toast(on?'Bookmarked '+ref(lo,hi):'Bookmark removed')};
   $('s-sh').onclick=()=>share(passage(sel.lo,sel.hi));
   $('s-cp').onclick=()=>copy(passage(sel.lo,sel.hi));
   $('s-x').onclick=closeSheet;
   updRef();
 }
+// ---- Marks screen (bookmarks + highlights, by verse reference so they carry across versions)
+function groupMarks(kind){
+  const it=[];
+  Object.keys(MK).forEach(k=>{const e=MK[k],p=k.split('.').map(Number);
+    if(p[0]>=66||!BOOKS[p[0]]||p[1]>=BOOKS[p[0]][1].length)return;
+    if(kind==='bm'&&e.b)it.push({b:p[0],c:p[1],v:p[2],t:e.b,col:0});
+    if(kind==='hl'&&e.h)it.push({b:p[0],c:p[1],v:p[2],t:e.ht||0,col:e.h})});
+  it.sort((a,b)=>a.b-b.b||a.c-b.c||a.v-b.v);
+  const g=[];
+  it.forEach(x=>{const l=g[g.length-1];
+    if(l&&l.b===x.b&&l.c===x.c&&x.v===l.hi+1&&l.col===x.col&&(kind==='hl'||l.t===x.t)){l.hi=x.v;l.t=Math.max(l.t,x.t)}
+    else g.push({b:x.b,c:x.c,lo:x.v,hi:x.v,t:x.t,col:x.col})});
+  if(S.ms==='new')g.sort((a,b)=>b.t-a.t||a.b-b.b||a.c-b.c||a.lo-b.lo);
+  return g;
+}
+const refOf=(b,c,lo,hi)=>(BOOKS[b][0]==='Psalms'?'Psalm':BOOKS[b][0])+' '+(c+1)+':'+(lo===hi?lo:lo+'-'+hi);
+function snip(g){
+  const ch=BOOKS[g.b][1][g.c]||[];let s='';
+  for(let v=g.lo;v<=g.hi&&s.length<120;v++)if(ch[v-1])s+=(s?' ':'')+ch[v-1];
+  if(!s)return '(this verse is not in the '+VL()+')';
+  return s.length>120?s.slice(0,120).replace(/\s+\S*$/,'')+'…':s}
+function renderMarks(){
+  const g=groupMarks(S.mt),bm=S.mt==='bm';
+  let h='<div class="tabs"><button class="big'+(bm?' on':'')+'" id="mt-bm">Bookmarks</button><button class="big'+(bm?'':' on')+'" id="mt-hl">Highlights</button></div>'
+    +'<div class="mrow"><span class="dl">'+g.length+(bm?' bookmark':' highlight')+(g.length===1?'':'s')+'</span><button id="ms-t">Order: '+(S.ms==='new'?'Newest first':'Bible order')+'</button></div>';
+  if(!g.length)h+='<p class="note">'+(bm?'No bookmarks yet. Hold your finger on a verse and choose “Add bookmark”.':'No highlights yet. Hold your finger on a verse and choose “Highlight”.')+'</p>';
+  g.forEach((x,i)=>{h+='<div class="mk"><button class="mkgo" data-i="'+i+'"><b>'+refOf(x.b,x.c,x.lo,x.hi)+(x.col?'<span class="dot" style="--c:var(--h'+x.col+')"></span>':'')+'</b>'+esc(snip(x))+'</button><button class="mkx" data-i="'+i+'">Remove</button></div>'});
+  $('marks').innerHTML=h;
+  $('mt-bm').onclick=()=>{S.mt='bm';save();renderMarks()};
+  $('mt-hl').onclick=()=>{S.mt='hl';save();renderMarks()};
+  $('ms-t').onclick=()=>{S.ms=S.ms==='new'?'bible':'new';save();renderMarks()};
+  $('marks').querySelectorAll('.mkgo').forEach(b=>b.onclick=()=>{const x=g[+b.dataset.i];S.b=x.b;S.c=x.c;S.hl=x.lo;read()});
+  $('marks').querySelectorAll('.mkx').forEach(b=>b.onclick=()=>{
+    if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Tap again';clearTimeout(b.tm);b.tm=setTimeout(()=>{b.dataset.armed='';b.textContent='Remove'},3000);return}
+    const x=g[+b.dataset.i];
+    for(let v=x.lo;v<=x.hi;v++){const k=mkey(x.b,x.c,v),e=MK[k];if(!e)continue;if(bm)delete e.b;else{delete e.h;delete e.ht}if(!e.h&&!e.b)delete MK[k]}
+    mksave();renderMarks();toast(bm?'Bookmark removed':'Highlight removed')});
+}
+function showMarks(){closeSheet();renderMarks();show('marks')}
+$('mk').onclick=showMarks;
 let DW,DE,WM,EM;
 function lookup(word){
   if(!DW){const D=window.DICT;DW=D.dw;DE=D.de;WM=D.wm;EM=D.em}
@@ -261,6 +353,7 @@ function refreshScreen(){
   if($('read').classList.contains('on'))rerenderChapter();
   else if($('nav').classList.contains('on')){if(navMode==='books')renderBookList()}
   else if($('search').classList.contains('on'))doSearch();
+  else if($('marks').classList.contains('on'))renderMarks();
 }
 function showDisplay(){closeSheet();drawDisplay();open()}
 function drawDisplay(){
