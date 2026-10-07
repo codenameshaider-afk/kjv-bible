@@ -72,6 +72,12 @@ header button{padding:0 7px;font-size:.9rem;margin:0 2px}#title{padding:0 4px;fo
 .mrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 10px}.mrow button{min-height:44px;font-size:.95rem;font-family:system-ui,sans-serif}
 .swb{background:linear-gradient(var(--c),var(--c)),var(--bg)!important;font-size:1rem!important}.swb.on{outline:3px solid var(--ink)}
 #sheet .row.sw .big{padding:0 4px}#sheet .swb.on{color:var(--ink)}
+#backup h2{font-size:1rem;color:var(--mute);margin:20px 0 8px;font-weight:normal;font-family:system-ui,sans-serif}
+#backup .big{font-size:1.1rem;min-height:56px}#backup p{font-family:system-ui,sans-serif;line-height:1.5;margin:6px 0}
+#backup textarea{width:100%;min-height:110px;font-size:1rem;padding:10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;margin:6px 0 8px}
+.bkpre{background:var(--btn);border-radius:10px;padding:12px;margin:10px 0;font-family:system-ui,sans-serif;line-height:1.5}
+.bkerr{color:#b3261e;font-family:system-ui,sans-serif;margin:8px 0}[data-theme=night] .bkerr{color:#ff8a80}
+label.big{display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--btn);cursor:pointer;text-align:center}
 </style>
 </head>
 <body>
@@ -85,6 +91,7 @@ header button{padding:0 7px;font-size:.9rem;margin:0 2px}#title{padding:0 4px;fo
   <section id="read" class="panel on"></section>
   <section id="nav" class="panel list"></section>
   <section id="marks" class="panel"></section>
+  <section id="backup" class="panel"></section>
   <section id="search" class="panel">
     <input id="q" type="search" placeholder="Search words, e.g. shepherd" autocomplete="off">
     <div id="res"></div>
@@ -115,15 +122,17 @@ async function useVersion(code){
   S.v=code;
 }
 const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-function show(p){closeSheet();document.body.classList.remove('hh');['read','nav','search','marks'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
+function show(p){closeSheet();document.body.classList.remove('hh');['read','nav','search','marks','backup'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
 function applyLook(){document.documentElement.dataset.theme=S.theme;document.documentElement.style.setProperty('--fs',S.fs+'px')}
+function cleanMarks(o){
+  const r={};if(!o||typeof o!=='object'||Array.isArray(o))return r;
+  Object.keys(o).forEach(k=>{const e=o[k];
+    if(!/^\d+\.\d+\.\d+$/.test(k)||!e||typeof e!=='object'||+k.split('.')[0]>=66)return;
+    const x={};if(e.h>=1&&e.h<=4){x.h=e.h|0;x.ht=+e.ht||0}if(+e.b>0)x.b=+e.b;
+    if(x.h||x.b)r[k]=x});
+  return r}
 let MK={};
-try{MK=JSON.parse(store.get('marks')||'{}')}catch(e){MK={}}
-if(!MK||typeof MK!=='object'||Array.isArray(MK))MK={};
-Object.keys(MK).forEach(k=>{const e=MK[k];
-  if(!/^\d+\.\d+\.\d+$/.test(k)||!e||typeof e!=='object'){delete MK[k];return}
-  const o={};if(e.h>=1&&e.h<=4){o.h=+e.h|0;o.ht=+e.ht||0}if(+e.b>0)o.b=+e.b;
-  if(o.h||o.b)MK[k]=o;else delete MK[k]});
+try{MK=cleanMarks(JSON.parse(store.get('marks')||'{}'))}catch(e){MK={}}
 const mkey=(b,c,v)=>b+'.'+c+'.'+v;
 const mksave=()=>store.set('marks',JSON.stringify(MK));
 const mcls=n=>{const e=MK[mkey(S.b,S.c,n)];return e?(e.h?' h'+e.h:'')+(e.b?' bm':''):''};
@@ -305,13 +314,15 @@ function snip(g){
 function renderMarks(){
   const g=groupMarks(S.mt),bm=S.mt==='bm';
   let h='<div class="tabs"><button class="big'+(bm?' on':'')+'" id="mt-bm">Bookmarks</button><button class="big'+(bm?'':' on')+'" id="mt-hl">Highlights</button></div>'
-    +'<div class="mrow"><span class="dl">'+g.length+(bm?' bookmark':' highlight')+(g.length===1?'':'s')+'</span><button id="ms-t">Order: '+(S.ms==='new'?'Newest first':'Bible order')+'</button></div>';
+    +'<div class="mrow"><span class="dl">'+g.length+(bm?' bookmark':' highlight')+(g.length===1?'':'s')+'</span><button id="ms-t">Order: '+(S.ms==='new'?'Newest first':'Bible order')+'</button></div>'
+    +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks</button>';
   if(!g.length)h+='<p class="note">'+(bm?'No bookmarks yet. Hold your finger on a verse and choose “Add bookmark”.':'No highlights yet. Hold your finger on a verse and choose “Highlight”.')+'</p>';
   g.forEach((x,i)=>{h+='<div class="mk"><button class="mkgo" data-i="'+i+'"><b>'+refOf(x.b,x.c,x.lo,x.hi)+(x.col?'<span class="dot" style="--c:var(--h'+x.col+')"></span>':'')+'</b>'+esc(snip(x))+'</button><button class="mkx" data-i="'+i+'">Remove</button></div>'});
   $('marks').innerHTML=h;
   $('mt-bm').onclick=()=>{S.mt='bm';save();renderMarks()};
   $('mt-hl').onclick=()=>{S.mt='hl';save();renderMarks()};
   $('ms-t').onclick=()=>{S.ms=S.ms==='new'?'bible':'new';save();renderMarks()};
+  $('bk-open').onclick=showBackup;
   $('marks').querySelectorAll('.mkgo').forEach(b=>b.onclick=()=>{const x=g[+b.dataset.i];S.b=x.b;S.c=x.c;S.hl=x.lo;read()});
   $('marks').querySelectorAll('.mkx').forEach(b=>b.onclick=()=>{
     if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Tap again';clearTimeout(b.tm);b.tm=setTimeout(()=>{b.dataset.armed='';b.textContent='Remove'},3000);return}
@@ -319,6 +330,78 @@ function renderMarks(){
     for(let v=x.lo;v<=x.hi;v++){const k=mkey(x.b,x.c,v),e=MK[k];if(!e)continue;if(bm)delete e.b;else{delete e.h;delete e.ht}if(!e.h&&!e.b)delete MK[k]}
     mksave();renderMarks();toast(bm?'Bookmark removed':'Highlight removed')});
 }
+const BK_HEAD='KJVBACKUP1:',BK_END=':END';
+const b64e=s=>{const u=new TextEncoder().encode(s);let b='';u.forEach(c=>b+=String.fromCharCode(c));return btoa(b).replace(/\+/g,'-').replace(/\//g,'_')};
+const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/').replace(/[^A-Za-z0-9+\/=]/g,'');while(s.length%4)s+='=';const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder().decode(u)};
+const mcount=m=>{let h=0,b=0;Object.keys(m).forEach(k=>{if(m[k].h)h++;if(m[k].b)b++});return {h,b}};
+const cword=(n,w)=>n+' '+w+(n===1?'':'s');
+const ctext=m=>{const c=mcount(m);return cword(c.h,'highlight')+', '+cword(c.b,'bookmark')};
+const payload=()=>({app:'kjv-bible',version:1,saved:new Date().toISOString(),marks:MK});
+function backupText(){
+  const p=payload();
+  return 'Bible app backup, '+p.saved.slice(0,10)+' ('+ctext(MK)+'). Keep this whole message; paste it into the app to restore.\n'+BK_HEAD+b64e(JSON.stringify(p))+BK_END}
+function parseBackup(text){
+  text=String(text||'').trim();
+  if(!text)return {err:'There is nothing to read yet. Paste your backup text or choose a backup file.'};
+  const cands=[];
+  const m=text.match(/KJVBACKUP1:([\s\S]*?):END/)||text.match(/KJVBACKUP1:([A-Za-z0-9_\-+\/=\s]+)/);
+  if(m)cands.push(()=>b64d(m[1]));
+  cands.push(()=>{const a=text.indexOf('{'),z=text.lastIndexOf('}');return text.slice(a,z+1)});
+  cands.push(()=>{const a=text.indexOf('{'),z=text.lastIndexOf('}');return text.slice(a,z+1).replace(/[“”]/g,'"')});
+  for(const f of cands){
+    try{const d=JSON.parse(f());
+      if(d&&d.app==='kjv-bible'&&d.marks&&typeof d.marks==='object'&&!Array.isArray(d.marks))return {data:{saved:String(d.saved||'').slice(0,10),marks:cleanMarks(d.marks)}}}catch(e){}}
+  return {err:'That does not look like a backup from this app. Make sure you copied the whole message, including the long line that starts with KJVBACKUP1.'}}
+function mergeMarks(a,b){
+  const r=JSON.parse(JSON.stringify(a));let added=0,changed=0;
+  Object.keys(b).forEach(k=>{const x=b[k],y=r[k];
+    if(!y){r[k]=Object.assign({},x);added++;return}
+    let ch=false;
+    if(x.h&&(!y.h||(x.ht||0)>(y.ht||0))&&x.h!==y.h){y.h=x.h;y.ht=x.ht||0;ch=true}
+    if(x.b&&!y.b){y.b=x.b;ch=true}
+    if(ch)changed++});
+  return {m:r,added,changed}}
+function setMarksTo(m){store.set('marks_prev',JSON.stringify(MK));MK=m;mksave();paintMarks()}
+let bkPending=null,bkMsg='';
+function renderBackup(){
+  const last=store.get('lastbackup'),prev=store.get('marks_prev');
+  const dl=!window.Capacitor;
+  let h='<button class="big" id="bk-back">&larr; Back to Marks</button><h2>Back up</h2>'
+    +'<p>On this phone: <b>'+ctext(MK)+'</b>.'+(last?'<br>Last backup made: '+esc(last.slice(0,10))+'.':'')+'</p>'
+    +'<button class="big" id="bk-share">Share backup</button><button class="big" id="bk-copy">Copy backup</button>'+(dl?'<button class="big" id="bk-dl">Save backup file</button>':'')
+    +'<p class="note">Send the backup to yourself (email, Messenger, notes app) and keep it. Uninstalling the app erases your marks; updating the app does not.</p>'
+    +'<h2>Restore</h2><label class="big" for="bk-file">Choose a backup file</label><input type="file" id="bk-file" accept=".txt,.json,text/plain,application/json" style="display:none">'
+    +'<p class="note">Or paste the backup message here:</p><textarea id="bk-text" placeholder="Paste backup here" aria-label="Paste backup text"></textarea>'
+    +'<button class="big" id="bk-read">Read backup</button><div id="bk-out">'+(bkMsg||'')+'</div>'
+    +(prev?'<h2>Undo</h2><button class="big" id="bk-undo">Undo the last restore</button>':'');
+  $('backup').innerHTML=h;
+  $('bk-back').onclick=showMarks;
+  $('bk-share').onclick=async()=>{store.set('lastbackup',new Date().toISOString());await share(backupText());renderBackup()};
+  $('bk-copy').onclick=async()=>{store.set('lastbackup',new Date().toISOString());await copy(backupText());renderBackup()};
+  if($('bk-dl'))$('bk-dl').onclick=()=>{try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload())],{type:'application/json'}));a.download='bible-app-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();store.set('lastbackup',new Date().toISOString());toast('Backup file saved')}catch(e){toast('Could not save a file here. Use Copy backup.')}};
+  $('bk-read').onclick=()=>readBackup($('bk-text').value);
+  $('bk-file').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>readBackup(String(r.result));r.onerror=()=>{showBkErr('That file could not be read.')};r.readAsText(f)};
+  if($('bk-undo'))$('bk-undo').onclick=()=>{try{MK=cleanMarks(JSON.parse(store.get('marks_prev')))}catch(e){return}store.set('marks_prev','');mksave();paintMarks();bkMsg='<p class="note">Restore undone.</p>';bkPending=null;renderBackup();toast('Restore undone')};
+  if(bkPending)showPreview();
+}
+function showBkErr(msg){bkPending=null;$('bk-out').innerHTML='<p class="bkerr" role="alert">'+esc(msg)+'</p>'}
+function readBackup(text){
+  const r=parseBackup(text);
+  if(r.err){showBkErr(r.err);return}
+  bkPending=r.data;bkMsg='';showPreview();
+}
+function showPreview(){
+  const d=bkPending,mg=mergeMarks(MK,d.marks);
+  $('bk-out').innerHTML='<div class="bkpre"><b>Backup found'+(d.saved?' ('+esc(d.saved)+')':'')+'</b><br>It contains '+ctext(d.marks)+'.<br>This phone has '+ctext(MK)+'.<br>Merging would add '+cword(mg.added,'mark')+' and update '+mg.changed+'.</div>'
+    +'<button class="big" id="bk-merge">Merge (keep what is here and add the backup)</button><button class="big" id="bk-replace">Replace everything with the backup</button><button class="big" id="bk-cancel">Cancel</button>';
+  $('bk-merge').onclick=()=>{setMarksTo(mg.m);bkPending=null;bkMsg='<p class="note">Merged: added '+cword(mg.added,'mark')+', updated '+mg.changed+'.</p>';renderBackup();toast('Backup merged')};
+  const rb=$('bk-replace');
+  rb.onclick=()=>{
+    if(!rb.dataset.armed){rb.dataset.armed='1';rb.textContent='Tap again to replace everything';clearTimeout(rb.tm);rb.tm=setTimeout(()=>{rb.dataset.armed='';rb.textContent='Replace everything with the backup'},4000);return}
+    setMarksTo(d.marks);bkPending=null;bkMsg='<p class="note">Replaced with the backup ('+ctext(MK)+').</p>';renderBackup();toast('Backup restored')};
+  $('bk-cancel').onclick=()=>{bkPending=null;$('bk-out').innerHTML='';$('bk-text').value=''};
+}
+function showBackup(){closeSheet();bkPending=null;bkMsg='';renderBackup();show('backup')}
 function showMarks(){closeSheet();renderMarks();show('marks')}
 $('mk').onclick=showMarks;
 let DW,DE,WM,EM;
