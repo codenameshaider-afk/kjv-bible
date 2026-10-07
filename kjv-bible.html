@@ -78,6 +78,12 @@ header button{padding:0 7px;font-size:.9rem;margin:0 2px}#title{padding:0 4px;fo
 .bkpre{background:var(--btn);border-radius:10px;padding:12px;margin:10px 0;font-family:system-ui,sans-serif;line-height:1.5}
 .bkerr{color:#b3261e;font-family:system-ui,sans-serif;margin:8px 0}[data-theme=night] .bkerr{color:#ff8a80}
 label.big{display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--btn);cursor:pointer;text-align:center}
+.tabs .big{padding:0 4px;font-size:.92rem}
+#note .row{display:flex;margin:0 -4px}#note .row .big{margin:0 4px 8px;flex:1}
+#note input,#note textarea{width:100%;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:10px 12px;font-family:Georgia,"Noto Serif","DejaVu Serif",serif}
+#nt-title{font-size:1.25rem;font-weight:bold;margin:12px 0 8px;min-height:52px}
+#nt-body{font-size:calc(var(--fs,26px)*.8);line-height:1.5;min-height:55vh;resize:none;display:block;margin:0 0 6px}
+#note .big{font-size:1.05rem;min-height:52px}#nt-st{min-height:1.2em;text-align:right}
 </style>
 </head>
 <body>
@@ -92,6 +98,7 @@ label.big{display:flex;align-items:center;justify-content:center;border-radius:1
   <section id="nav" class="panel list"></section>
   <section id="marks" class="panel"></section>
   <section id="backup" class="panel"></section>
+  <section id="note" class="panel"></section>
   <section id="search" class="panel">
     <input id="q" type="search" placeholder="Search words, e.g. shepherd" autocomplete="off">
     <div id="res"></div>
@@ -109,7 +116,7 @@ try{Object.assign(S,JSON.parse(store.get('kjv')||'{}'))}catch(e){}
 S.hl=0;
 if(!VERS.some(x=>x[0]===S.v))S.v='kjv';
 if(!(S.b>=0&&S.b<66))S.b=42;
-if(S.layout!=='para')S.layout='lines';S.vn=S.vn!==false;S.ch=S.ch!==false;S.sh=S.sh!==false;if(S.mt!=='hl')S.mt='bm';if(S.ms!=='new')S.ms='bible';
+if(S.layout!=='para')S.layout='lines';S.vn=S.vn!==false;S.ch=S.ch!==false;S.sh=S.sh!==false;if(S.mt!=='hl'&&S.mt!=='nt')S.mt='bm';if(S.ms!=='new')S.ms='bible';
 if(S.theme!=='night')S.theme='day';S.fs=Math.min(48,Math.max(16,+S.fs||26));
 const save=()=>store.set('kjv',JSON.stringify({b:S.b,c:S.c,fs:S.fs,theme:S.theme,v:S.v,layout:S.layout,vn:S.vn,ch:S.ch,sh:S.sh,mt:S.mt,ms:S.ms}));
 const VL=()=>VERS.find(x=>x[0]===S.v)[1];
@@ -122,7 +129,7 @@ async function useVersion(code){
   S.v=code;
 }
 const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-function show(p){closeSheet();document.body.classList.remove('hh');['read','nav','search','marks','backup'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
+function show(p){closeSheet();if(typeof noteLeave==='function')noteLeave(p);document.body.classList.remove('hh');['read','nav','search','marks','backup','note'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
 function applyLook(){document.documentElement.dataset.theme=S.theme;document.documentElement.style.setProperty('--fs',S.fs+'px')}
 function cleanMarks(o){
   const r={};if(!o||typeof o!=='object'||Array.isArray(o))return r;
@@ -133,6 +140,21 @@ function cleanMarks(o){
   return r}
 let MK={};
 try{MK=cleanMarks(JSON.parse(store.get('marks')||'{}'))}catch(e){MK={}}
+function cleanNotes(x){
+  const arr=Array.isArray(x)?x:(x&&typeof x==='object'?Object.values(x):[]),r={};
+  arr.forEach(n=>{if(!n||typeof n!=='object')return;const id=String(n.id||'');if(!/^[\w-]{1,40}$/.test(id))return;
+    const c=+n.created>0?+n.created:Date.now();
+    r[id]={id,title:String(n.title||'').slice(0,200),body:String(n.body||'').slice(0,200000),created:c,updated:+n.updated>0?+n.updated:c}});
+  return r}
+let NOTES={};
+try{NOTES=cleanNotes(JSON.parse(store.get('notes')||'[]'))}catch(e){NOTES={}}
+const nsave=()=>store.set('notes',JSON.stringify(Object.values(NOTES)));
+const NC=()=>Object.keys(NOTES).length;
+const fdate=ts=>{try{return new Date(ts).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}catch(e){return ''}};
+const ntitle=n=>n.title.trim()||('Sermon note, '+fdate(n.created));
+const nsorted=()=>Object.values(NOTES).sort((a,b)=>b.updated-a.updated||(a.id<b.id?-1:1));
+function newNote(body){const id='n'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts=Date.now();NOTES[id]={id,title:'',body:body||'',created:ts,updated:ts};nsave();return NOTES[id]}
+const ntext=n=>'# '+ntitle(n)+'\n'+fdate(n.created)+'\n\n'+n.body.trim()+'\n';
 const mkey=(b,c,v)=>b+'.'+c+'.'+v;
 const mksave=()=>store.set('marks',JSON.stringify(MK));
 const mcls=n=>{const e=MK[mkey(S.b,S.c,n)];return e?(e.h?' h'+e.h:'')+(e.b?' bm':''):''};
@@ -265,11 +287,13 @@ function menu(p,word){
   lastWord=word;sel={a:p,lo:p,hi:p};paint();
   $('sheet').innerHTML='<div class="sh-t">'+ref(p,p)+'</div><button class="big" id="m-def">Meaning of &ldquo;'+esc(word)+'&rdquo;</button>'
     +'<div class="row"><button class="big" id="m-hl">Highlight</button><button class="big" id="m-bm">'+(allBm(p,p)?'Remove bookmark':'Add bookmark')+'</button></div>'
+    +'<button class="big" id="m-note">Add to sermon note</button>'
     +'<div class="row"><button class="big" id="m-sh">Share verse</button><button class="big" id="m-cp">Copy verse</button></div>'
     +'<button class="big" id="m-more">Select more verses</button><button class="big close" id="m-x">Close</button>';
   open();
   $('m-def').onclick=()=>define(p,word);
   $('m-hl').onclick=()=>hlPicker(p,p,()=>menu(p,word));
+  $('m-note').onclick=()=>noteTarget(p,p,()=>menu(p,word));
   $('m-bm').onclick=()=>{const on=toggleBm(p,p);closeSheet();toast(on?'Bookmarked '+ref(p,p):'Bookmark removed')};
   $('m-sh').onclick=()=>share(passage(p,p));
   $('m-cp').onclick=()=>copy(passage(p,p));
@@ -281,9 +305,11 @@ const updRef=()=>{$('selref').textContent=ref(sel.lo,sel.hi)+' — tap verses to
 function selectBar(){
   sel.on=true;
   $('sheet').innerHTML='<div class="sh-t" id="selref"></div><div class="row"><button class="big" id="s-hl">Highlight</button><button class="big" id="s-bm">Bookmark</button></div>'
+    +'<button class="big" id="s-note">Add to sermon note</button>'
     +'<div class="row"><button class="big" id="s-sh">Share</button><button class="big" id="s-cp">Copy</button><button class="big close" id="s-x">Cancel</button></div>';
   open();
   $('s-hl').onclick=()=>hlPicker(sel.lo,sel.hi,selectBar);
+  $('s-note').onclick=()=>noteTarget(sel.lo,sel.hi,selectBar);
   $('s-bm').onclick=()=>{const lo=sel.lo,hi=sel.hi,on=toggleBm(lo,hi);closeSheet();toast(on?'Bookmarked '+ref(lo,hi):'Bookmark removed')};
   $('s-sh').onclick=()=>share(passage(sel.lo,sel.hi));
   $('s-cp').onclick=()=>copy(passage(sel.lo,sel.hi));
@@ -311,16 +337,82 @@ function snip(g){
   for(let v=g.lo;v<=g.hi&&s.length<120;v++)if(ch[v-1])s+=(s?' ':'')+ch[v-1];
   if(!s)return '(this verse is not in the '+VL()+')';
   return s.length>120?s.slice(0,120).replace(/\s+\S*$/,'')+'…':s}
+const marksTabs=()=>'<div class="tabs"><button class="big'+(S.mt==='bm'?' on':'')+'" id="mt-bm">Bookmarks</button><button class="big'+(S.mt==='hl'?' on':'')+'" id="mt-hl">Highlights</button><button class="big'+(S.mt==='nt'?' on':'')+'" id="mt-nt">Notes</button></div>';
+function bindTabs(){['bm','hl','nt'].forEach(k=>{$('mt-'+k).onclick=()=>{S.mt=k;save();renderMarks()}})}
+function renderNotesTab(){
+  const l=nsorted(),tr=store.get('notes_trash');
+  let h=marksTabs()+'<div class="mrow"><span class="dl">'+cword(l.length,'note')+'</span><button id="nt-new">+ New note</button></div>'
+    +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks and notes</button>';
+  if(!l.length)h+='<p class="note">No notes yet. Tap “+ New note”, or hold your finger on a verse and choose “Add to sermon note”.</p>';
+  l.forEach(n=>{const sn=n.body.replace(/\s+/g,' ').trim();h+='<div class="mk"><button class="mkgo" data-id="'+n.id+'"><b>'+esc(ntitle(n))+'</b>'+esc(fdate(n.updated)+(sn?' · '+(sn.length>110?sn.slice(0,110).replace(/\s+\S*$/,'')+'…':sn):''))+'</button></div>'});
+  if(l.length)h+='<button class="big" id="nt-all" style="min-height:52px;font-size:1.05rem;margin-top:8px">Share all notes</button>';
+  if(tr)h+='<button class="big" id="nt-undo" style="min-height:52px;font-size:1.05rem;margin-top:8px">Restore the last deleted note</button>';
+  $('marks').innerHTML=h;
+  bindTabs();
+  $('bk-open').onclick=showBackup;
+  $('nt-new').onclick=()=>openNote(newNote().id);
+  $('marks').querySelectorAll('.mkgo').forEach(b=>b.onclick=()=>openNote(b.dataset.id));
+  if($('nt-all'))$('nt-all').onclick=()=>share(nsorted().map(ntext).join('\n---\n\n'));
+  if($('nt-undo'))$('nt-undo').onclick=()=>{try{const r=cleanNotes([JSON.parse(store.get('notes_trash'))]);Object.assign(NOTES,r);nsave()}catch(e){}store.set('notes_trash','');renderNotesTab();toast('Note restored')};
+}
+let noteCur=null,noteT=null;
+function noteSaveNow(){
+  clearTimeout(noteT);
+  const n=noteCur&&NOTES[noteCur],ti=$('nt-title'),bo=$('nt-body');
+  if(!n||!ti||!bo)return;
+  if(n.title!==ti.value||n.body!==bo.value){n.title=ti.value;n.body=bo.value;n.updated=Date.now();nsave()}
+  const st=$('nt-st');if(st)st.textContent='Saved'}
+function noteLeave(p){
+  if(p==='note'||!noteCur)return;
+  noteSaveNow();const n=NOTES[noteCur];
+  if(n&&!n.title.trim()&&!n.body.trim()){delete NOTES[noteCur];nsave()}
+  noteCur=null}
+function openNote(id){
+  if(!NOTES[id])return;
+  noteCur=id;const n=NOTES[id];
+  $('note').innerHTML='<button class="big" id="nt-back">&larr; Notes</button>'
+    +'<input id="nt-title" type="text" maxlength="200" aria-label="Note title"><textarea id="nt-body" aria-label="Note text" placeholder="Type your notes here. They save automatically."></textarea>'
+    +'<div id="nt-st" class="dl"></div><div class="row"><button class="big" id="nt-sh">Share</button><button class="big" id="nt-cp">Copy</button></div>'
+    +'<button class="big" id="nt-del">Delete this note</button>';
+  $('nt-title').placeholder='Sermon note, '+fdate(n.created);$('nt-title').value=n.title;$('nt-body').value=n.body;
+  const grow=()=>{const b=$('nt-body');b.style.height='auto';b.style.height=Math.max(b.scrollHeight,Math.round(window.innerHeight*.55))+'px'};
+  const dirty=()=>{$('nt-st').textContent='Saving…';clearTimeout(noteT);noteT=setTimeout(noteSaveNow,500)};
+  $('nt-title').oninput=dirty;$('nt-body').oninput=()=>{grow();dirty()};
+  $('nt-title').onblur=$('nt-body').onblur=noteSaveNow;
+  $('nt-back').onclick=()=>{S.mt='nt';save();showMarks()};
+  $('nt-sh').onclick=()=>{noteSaveNow();share(ntext(NOTES[id]))};
+  $('nt-cp').onclick=()=>{noteSaveNow();copy(ntext(NOTES[id]))};
+  const d=$('nt-del');
+  d.onclick=()=>{
+    if(!d.dataset.armed){d.dataset.armed='1';d.textContent='Tap again to delete this note';clearTimeout(d.tm);d.tm=setTimeout(()=>{d.dataset.armed='';d.textContent='Delete this note'},4000);return}
+    clearTimeout(noteT);store.set('notes_trash',JSON.stringify(NOTES[id]));delete NOTES[id];nsave();noteCur=null;S.mt='nt';save();showMarks();toast('Note deleted')};
+  show('note');grow();
+}
+const nverse=(lo,hi)=>ref(lo,hi)+' ('+VL()+') — '+rng(lo,hi).map(v=>BOOKS[S.b][1][S.c][v-1]).join(' ');
+function addToNote(id,text){
+  const n=NOTES[id];if(!n)return null;
+  const b=n.body.replace(/\s+$/,'');n.body=(b?b+'\n\n':'')+text+'\n\n';n.updated=Date.now();nsave();S.mt='nt';save();return n}
+function noteTarget(lo,hi,back){
+  const text=nverse(lo,hi),l=nsorted().slice(0,4);
+  const done=n=>{closeSheet();toast('Added to “'+ntitle(n)+'”')};
+  if(!l.length){done(addToNote(newNote().id,text));return}
+  $('sheet').innerHTML='<div class="sh-t">Add '+esc(ref(lo,hi))+' to a note</div>'+l.map(n=>'<button class="big" data-id="'+n.id+'">'+esc(ntitle(n))+'</button>').join('')
+    +'<button class="big" id="an-new">+ New note</button><div class="row"><button class="big" id="an-back">Back</button><button class="big close" id="an-x">Close</button></div>';
+  open();
+  $('sheet').querySelectorAll('button[data-id]').forEach(b=>b.onclick=()=>done(addToNote(b.dataset.id,text)));
+  $('an-new').onclick=()=>done(addToNote(newNote().id,text));
+  $('an-back').onclick=back;$('an-x').onclick=closeSheet;
+}
 function renderMarks(){
+  if(S.mt==='nt'){renderNotesTab();return}
   const g=groupMarks(S.mt),bm=S.mt==='bm';
-  let h='<div class="tabs"><button class="big'+(bm?' on':'')+'" id="mt-bm">Bookmarks</button><button class="big'+(bm?'':' on')+'" id="mt-hl">Highlights</button></div>'
+  let h=marksTabs()
     +'<div class="mrow"><span class="dl">'+g.length+(bm?' bookmark':' highlight')+(g.length===1?'':'s')+'</span><button id="ms-t">Order: '+(S.ms==='new'?'Newest first':'Bible order')+'</button></div>'
     +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks</button>';
   if(!g.length)h+='<p class="note">'+(bm?'No bookmarks yet. Hold your finger on a verse and choose “Add bookmark”.':'No highlights yet. Hold your finger on a verse and choose “Highlight”.')+'</p>';
   g.forEach((x,i)=>{h+='<div class="mk"><button class="mkgo" data-i="'+i+'"><b>'+refOf(x.b,x.c,x.lo,x.hi)+(x.col?'<span class="dot" style="--c:var(--h'+x.col+')"></span>':'')+'</b>'+esc(snip(x))+'</button><button class="mkx" data-i="'+i+'">Remove</button></div>'});
   $('marks').innerHTML=h;
-  $('mt-bm').onclick=()=>{S.mt='bm';save();renderMarks()};
-  $('mt-hl').onclick=()=>{S.mt='hl';save();renderMarks()};
+  bindTabs();
   $('ms-t').onclick=()=>{S.ms=S.ms==='new'?'bible':'new';save();renderMarks()};
   $('bk-open').onclick=showBackup;
   $('marks').querySelectorAll('.mkgo').forEach(b=>b.onclick=()=>{const x=g[+b.dataset.i];S.b=x.b;S.c=x.c;S.hl=x.lo;read()});
@@ -335,11 +427,11 @@ const b64e=s=>{const u=new TextEncoder().encode(s);let b='';u.forEach(c=>b+=Stri
 const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/').replace(/[^A-Za-z0-9+\/=]/g,'');while(s.length%4)s+='=';const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder().decode(u)};
 const mcount=m=>{let h=0,b=0;Object.keys(m).forEach(k=>{if(m[k].h)h++;if(m[k].b)b++});return {h,b}};
 const cword=(n,w)=>n+' '+w+(n===1?'':'s');
-const ctext=m=>{const c=mcount(m);return cword(c.h,'highlight')+', '+cword(c.b,'bookmark')};
-const payload=()=>({app:'kjv-bible',version:1,saved:new Date().toISOString(),marks:MK});
+const ctext=(m,nn)=>{const c=mcount(m);return cword(c.h,'highlight')+', '+cword(c.b,'bookmark')+(nn?', '+cword(nn,'note'):'')};
+const payload=()=>({app:'kjv-bible',version:1,saved:new Date().toISOString(),marks:MK,notes:Object.values(NOTES)});
 function backupText(){
   const p=payload();
-  return 'Bible app backup, '+p.saved.slice(0,10)+' ('+ctext(MK)+'). Keep this whole message; paste it into the app to restore.\n'+BK_HEAD+b64e(JSON.stringify(p))+BK_END}
+  return 'Bible app backup, '+p.saved.slice(0,10)+' ('+ctext(MK,NC())+'). Keep this whole message; paste it into the app to restore.\n'+BK_HEAD+b64e(JSON.stringify(p))+BK_END}
 function parseBackup(text){
   text=String(text||'').trim();
   if(!text)return {err:'There is nothing to read yet. Paste your backup text or choose a backup file.'};
@@ -350,7 +442,10 @@ function parseBackup(text){
   cands.push(()=>{const a=text.indexOf('{'),z=text.lastIndexOf('}');return text.slice(a,z+1).replace(/[“”]/g,'"')});
   for(const f of cands){
     try{const d=JSON.parse(f());
-      if(d&&d.app==='kjv-bible'&&d.marks&&typeof d.marks==='object'&&!Array.isArray(d.marks))return {data:{saved:String(d.saved||'').slice(0,10),marks:cleanMarks(d.marks)}}}catch(e){}}
+      if(d&&d.app==='kjv-bible'&&d.marks&&typeof d.marks==='object'&&!Array.isArray(d.marks)){
+        const o={saved:String(d.saved||'').slice(0,10),marks:cleanMarks(d.marks)};
+        if(Array.isArray(d.notes))o.notes=cleanNotes(d.notes);
+        return {data:o}}}catch(e){}}
   return {err:'That does not look like a backup from this app. Make sure you copied the whole message, including the long line that starts with KJVBACKUP1.'}}
 function mergeMarks(a,b){
   const r=JSON.parse(JSON.stringify(a));let added=0,changed=0;
@@ -361,15 +456,24 @@ function mergeMarks(a,b){
     if(x.b&&!y.b){y.b=x.b;ch=true}
     if(ch)changed++});
   return {m:r,added,changed}}
-function setMarksTo(m){store.set('marks_prev',JSON.stringify(MK));MK=m;mksave();paintMarks()}
+function mergeNotes(a,b){
+  const r=JSON.parse(JSON.stringify(a));let added=0,changed=0;
+  Object.keys(b).forEach(id=>{const x=b[id],y=r[id];
+    if(!y){r[id]=Object.assign({},x);added++}
+    else if(x.updated>y.updated&&(x.title!==y.title||x.body!==y.body)){r[id]=Object.assign({},x);changed++}});
+  return {m:r,added,changed}}
+function applyRestore(marks,notes){
+  store.set('marks_prev',JSON.stringify(MK));store.set('notes_prev',JSON.stringify(Object.values(NOTES)));
+  MK=marks;mksave();paintMarks();
+  if(notes){NOTES=notes;nsave()}}
 let bkPending=null,bkMsg='';
 function renderBackup(){
   const last=store.get('lastbackup'),prev=store.get('marks_prev');
   const dl=!window.Capacitor;
   let h='<button class="big" id="bk-back">&larr; Back to Marks</button><h2>Back up</h2>'
-    +'<p>On this phone: <b>'+ctext(MK)+'</b>.'+(last?'<br>Last backup made: '+esc(last.slice(0,10))+'.':'')+'</p>'
+    +'<p>On this phone: <b>'+ctext(MK,NC())+'</b>.'+(last?'<br>Last backup made: '+esc(last.slice(0,10))+'.':'')+'</p>'
     +'<button class="big" id="bk-share">Share backup</button><button class="big" id="bk-copy">Copy backup</button>'+(dl?'<button class="big" id="bk-dl">Save backup file</button>':'')
-    +'<p class="note">Send the backup to yourself (email, Messenger, notes app) and keep it. Uninstalling the app erases your marks; updating the app does not.</p>'
+    +'<p class="note">Send the backup to yourself (email, Messenger, notes app) and keep it. Uninstalling the app erases your marks and notes; updating the app does not.</p>'
     +'<h2>Restore</h2><label class="big" for="bk-file">Choose a backup file</label><input type="file" id="bk-file" accept=".txt,.json,text/plain,application/json" style="display:none">'
     +'<p class="note">Or paste the backup message here:</p><textarea id="bk-text" placeholder="Paste backup here" aria-label="Paste backup text"></textarea>'
     +'<button class="big" id="bk-read">Read backup</button><div id="bk-out">'+(bkMsg||'')+'</div>'
@@ -381,7 +485,10 @@ function renderBackup(){
   if($('bk-dl'))$('bk-dl').onclick=()=>{try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload())],{type:'application/json'}));a.download='bible-app-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();store.set('lastbackup',new Date().toISOString());toast('Backup file saved')}catch(e){toast('Could not save a file here. Use Copy backup.')}};
   $('bk-read').onclick=()=>readBackup($('bk-text').value);
   $('bk-file').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>readBackup(String(r.result));r.onerror=()=>{showBkErr('That file could not be read.')};r.readAsText(f)};
-  if($('bk-undo'))$('bk-undo').onclick=()=>{try{MK=cleanMarks(JSON.parse(store.get('marks_prev')))}catch(e){return}store.set('marks_prev','');mksave();paintMarks();bkMsg='<p class="note">Restore undone.</p>';bkPending=null;renderBackup();toast('Restore undone')};
+  if($('bk-undo'))$('bk-undo').onclick=()=>{
+    try{MK=cleanMarks(JSON.parse(store.get('marks_prev')))}catch(e){return}
+    try{const pn=store.get('notes_prev');if(pn){NOTES=cleanNotes(JSON.parse(pn));nsave()}}catch(e){}
+    store.set('marks_prev','');store.set('notes_prev','');mksave();paintMarks();bkMsg='<p class="note">Restore undone.</p>';bkPending=null;renderBackup();toast('Restore undone')};
   if(bkPending)showPreview();
 }
 function showBkErr(msg){bkPending=null;$('bk-out').innerHTML='<p class="bkerr" role="alert">'+esc(msg)+'</p>'}
@@ -391,19 +498,20 @@ function readBackup(text){
   bkPending=r.data;bkMsg='';showPreview();
 }
 function showPreview(){
-  const d=bkPending,mg=mergeMarks(MK,d.marks);
-  $('bk-out').innerHTML='<div class="bkpre"><b>Backup found'+(d.saved?' ('+esc(d.saved)+')':'')+'</b><br>It contains '+ctext(d.marks)+'.<br>This phone has '+ctext(MK)+'.<br>Merging would add '+cword(mg.added,'mark')+' and update '+mg.changed+'.</div>'
+  const d=bkPending,mg=mergeMarks(MK,d.marks),ng=d.notes?mergeNotes(NOTES,d.notes):null,dn=d.notes?Object.keys(d.notes).length:0;
+  $('bk-out').innerHTML='<div class="bkpre"><b>Backup found'+(d.saved?' ('+esc(d.saved)+')':'')+'</b><br>It contains '+ctext(d.marks,dn)+'.<br>This phone has '+ctext(MK,NC())+'.<br>Merging would add '+cword(mg.added,'mark')+' and update '+mg.changed+(ng?'; notes: '+ng.added+' new, '+ng.changed+' updated':'')+'.'+(d.notes?'':'<br><small>This older backup has no notes, so your notes are left alone.</small>')+'</div>'
     +'<button class="big" id="bk-merge">Merge (keep what is here and add the backup)</button><button class="big" id="bk-replace">Replace everything with the backup</button><button class="big" id="bk-cancel">Cancel</button>';
-  $('bk-merge').onclick=()=>{setMarksTo(mg.m);bkPending=null;bkMsg='<p class="note">Merged: added '+cword(mg.added,'mark')+', updated '+mg.changed+'.</p>';renderBackup();toast('Backup merged')};
+  $('bk-merge').onclick=()=>{applyRestore(mg.m,ng&&ng.m);bkPending=null;bkMsg='<p class="note">Merged: added '+cword(mg.added,'mark')+', updated '+mg.changed+(ng?'; notes: '+ng.added+' new, '+ng.changed+' updated':'')+'.</p>';renderBackup();toast('Backup merged')};
   const rb=$('bk-replace');
   rb.onclick=()=>{
     if(!rb.dataset.armed){rb.dataset.armed='1';rb.textContent='Tap again to replace everything';clearTimeout(rb.tm);rb.tm=setTimeout(()=>{rb.dataset.armed='';rb.textContent='Replace everything with the backup'},4000);return}
-    setMarksTo(d.marks);bkPending=null;bkMsg='<p class="note">Replaced with the backup ('+ctext(MK)+').</p>';renderBackup();toast('Backup restored')};
+    applyRestore(d.marks,d.notes||null);bkPending=null;bkMsg='<p class="note">Replaced with the backup ('+ctext(MK,NC())+').</p>';renderBackup();toast('Backup restored')};
   $('bk-cancel').onclick=()=>{bkPending=null;$('bk-out').innerHTML='';$('bk-text').value=''};
 }
 function showBackup(){closeSheet();bkPending=null;bkMsg='';renderBackup();show('backup')}
-function showMarks(){closeSheet();renderMarks();show('marks')}
+function showMarks(){closeSheet();noteLeave('marks');renderMarks();show('marks')}
 $('mk').onclick=showMarks;
+window.addEventListener('pagehide',noteSaveNow);document.addEventListener('visibilitychange',()=>{if(document.hidden)noteSaveNow()});
 let DW,DE,WM,EM;
 function lookup(word){
   if(!DW){const D=window.DICT;DW=D.dw;DE=D.de;WM=D.wm;EM=D.em}
