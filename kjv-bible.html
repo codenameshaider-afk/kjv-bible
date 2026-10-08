@@ -536,7 +536,8 @@ async function original(p,word,idx){
   if(!strongsReady()){
     $('sheet').innerHTML='<div class="sh-t">Loading the original-language data…</div>';open();
     try{if(!window.STRONGS)await loadScript('data-strongs.js');if(!window.LEX)await loadScript('data-lex.js')}
-    catch(e){fail('The Strong’s data could not be loaded.');return}
+    catch(e){fail('The Strong’s data could not be loaded: the file “'+(e&&e.message||'?')+'” is missing from this app build.');return}
+    if(!strongsReady()){fail('The Strong’s data files loaded but are incomplete. Please upload them again.');return}
     if($('sheet').className!=='on')return;
   }
   const row=(((window.STRONGS[S.b]||[])[S.c]||[])[p-1]||'').split(',');
