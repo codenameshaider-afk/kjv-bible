@@ -84,6 +84,11 @@ label.big{display:flex;align-items:center;justify-content:center;border-radius:1
 #nt-title{font-size:1.25rem;font-weight:bold;margin:12px 0 8px;min-height:52px}
 #nt-body{font-size:calc(var(--fs,26px)*.8);line-height:1.5;min-height:55vh;resize:none;display:block;margin:0 0 6px}
 #note .big{font-size:1.05rem;min-height:52px}#nt-st{min-height:1.2em;text-align:right}
+.orig{max-height:46vh;overflow-y:auto;line-height:1.5;font-size:calc(var(--fs,26px)*.75);margin:0 0 10px;padding:10px 12px;border:2px solid var(--line);border-radius:10px}
+.orig .ow{display:block;font-size:1.5em;line-height:1.3}.orig .om{font-family:system-ui,sans-serif;font-size:.62em;color:var(--mute);margin:2px 0 6px;display:block}
+.orig .od{white-space:pre-wrap}.orig hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.orig small{display:block;font-family:system-ui,sans-serif;color:var(--mute);font-size:.55em;margin-top:10px}
+#sheet .tabs .big.sn{min-height:46px;font-size:.95rem;font-family:system-ui,sans-serif}
 </style>
 </head>
 <body>
@@ -283,15 +288,19 @@ function hlPicker(lo,hi,back){
   $('h-none').onclick=()=>{applyHl(lo,hi,0);closeSheet();toast('Highlight removed')};
   $('h-back').onclick=back;$('h-x').onclick=closeSheet;
 }
-function menu(p,word){
+let lastIdx=-1;
+function menu(p,word,idx){
+  if(idx!==undefined)lastIdx=idx;
   lastWord=word;sel={a:p,lo:p,hi:p};paint();
   $('sheet').innerHTML='<div class="sh-t">'+ref(p,p)+'</div><button class="big" id="m-def">Meaning of &ldquo;'+esc(word)+'&rdquo;</button>'
+    +(S.v==='kjv'?'<button class="big" id="m-orig">Original word (Strong\u2019s)</button>':'')
     +'<div class="row"><button class="big" id="m-hl">Highlight</button><button class="big" id="m-bm">'+(allBm(p,p)?'Remove bookmark':'Add bookmark')+'</button></div>'
     +'<button class="big" id="m-note">Add to sermon note</button>'
     +'<div class="row"><button class="big" id="m-sh">Share verse</button><button class="big" id="m-cp">Copy verse</button></div>'
     +'<button class="big" id="m-more">Select more verses</button><button class="big close" id="m-x">Close</button>';
   open();
   $('m-def').onclick=()=>define(p,word);
+  if($('m-orig'))$('m-orig').onclick=()=>original(p,word,lastIdx);
   $('m-hl').onclick=()=>hlPicker(p,p,()=>menu(p,word));
   $('m-note').onclick=()=>noteTarget(p,p,()=>menu(p,word));
   $('m-bm').onclick=()=>{const on=toggleBm(p,p);closeSheet();toast(on?'Bookmarked '+ref(p,p):'Bookmark removed')};
@@ -519,6 +528,34 @@ function lookup(word){
   const find=x=>{const h=WM[x]||(DW[x]?x:null),k=EM[x]||(DE[x]?x:null);return h||k?{gen:h?DW[h]:null,bib:k?DE[k]:null}:null};
   return find(w)||find(w.replace(/'s$/,''))||{gen:null,bib:null};
 }
+const strongsReady=()=>window.STRONGS&&window.LEX;
+async function original(p,word,idx){
+  const back=()=>menu(p,word),fail=m=>{
+    $('sheet').innerHTML='<div class="sh-t">&ldquo;'+esc(word)+'&rdquo;</div><div class="orig">'+esc(m)+'</div><div class="row"><button class="big" id="o-back">Back</button><button class="big close" id="o-x">Close</button></div>';
+    open();$('o-back').onclick=back;$('o-x').onclick=closeSheet};
+  if(!strongsReady()){
+    $('sheet').innerHTML='<div class="sh-t">Loading the original-language data…</div>';open();
+    try{if(!window.STRONGS)await loadScript('data-strongs.js');if(!window.LEX)await loadScript('data-lex.js')}
+    catch(e){fail('The Strong’s data could not be loaded.');return}
+    if($('sheet').className!=='on')return;
+  }
+  const row=(((window.STRONGS[S.b]||[])[S.c]||[])[p-1]||'').split(',');
+  const tag=idx>=0?row[idx]:'';
+  if(!tag){fail('No original word is tagged for “'+word+'”. In the KJV, words the translators added to complete the sense (often shown in italics in print) have no matching Hebrew or Greek word.');return}
+  const nums=tag.split('+');let cur=0;
+  const draw=()=>{
+    const n=nums[cur],k=n[0],lst=(window.LEX[k]||{})[n.slice(1)]||[];
+    const body=lst.length?lst.map(e=>'<span class="ow"'+(k==='H'?' dir="rtl" lang="he"':' lang="el"')+'>'+esc(e[0])+'</span><span class="om">'+esc(e[1])+(e[2]?' · '+esc(e[2]):'')+' · Strong’s '+n+'</span><span class="od">'+esc(e[3])+'</span>').join('<hr>'):'<span class="od">No entry for '+n+'.</span>';
+    $('sheet').innerHTML='<div class="sh-t">&ldquo;'+esc(word)+'&rdquo; — '+(k==='H'?'Hebrew':'Greek')+'</div>'
+      +(nums.length>1?'<div class="tabs">'+nums.map((x,i)=>'<button class="big sn'+(i===cur?' on':'')+'" data-i="'+i+'">'+x+'</button>').join('')+'</div>':'')
+      +'<div class="orig">'+body+'<small>Tags: CrossWire Bible Society (KJV with Strong’s numbers). Lexicon: STEP Bible (stepbible.org), Tyndale House, Cambridge, CC BY 4.0.</small></div>'
+      +'<div class="row"><button class="big" id="o-back">Back</button><button class="big close" id="o-x">Close</button></div>';
+    open();
+    $('sheet').querySelectorAll('.sn').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;draw()});
+    $('o-back').onclick=back;$('o-x').onclick=closeSheet;
+  };
+  draw();
+}
 async function define(p,word){
   if(!window.DICT){
     $('sheet').innerHTML='<div class="sh-t">Loading the dictionary…</div>';open();
@@ -581,7 +618,7 @@ rd.addEventListener('touchstart',e=>{
   lpFired=false;
   const w=e.target.closest&&e.target.closest('.w');if(!w||(sel&&sel.on))return;
   const t=e.touches[0];lx=t.clientX;ly=t.clientY;
-  lt=setTimeout(()=>{lpFired=true;w.classList.add('wp');if(navigator.vibrate)navigator.vibrate(30);menu(+w.closest('.vs').dataset.v,w.textContent)},500);
+  lt=setTimeout(()=>{lpFired=true;w.classList.add('wp');if(navigator.vibrate)navigator.vibrate(30);const vs=w.closest('.vs');menu(+vs.dataset.v,w.textContent,[...vs.querySelectorAll('.w')].indexOf(w))},500);
 },{passive:true});
 rd.addEventListener('touchmove',e=>{const t=e.touches[0];if(Math.abs(t.clientX-lx)>10||Math.abs(t.clientY-ly)>10)clearTimeout(lt)},{passive:true});
 ['touchend','touchcancel'].forEach(n=>rd.addEventListener(n,()=>clearTimeout(lt)));
