@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p www assets
           cp kjv-bible.html www/index.html
-          cp data-kjv.js data-bsb.js data-web.js data-asv.js data-dict.js data-strongs.js data-lex.js www/
+          cp data-*.js www/
           cp icon-only.png icon-foreground.png icon-background.png assets/
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
