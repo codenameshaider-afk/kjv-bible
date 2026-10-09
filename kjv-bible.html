@@ -30,7 +30,9 @@ body.hh header{transform:translateY(-130%)}
 .list button{display:block;width:100%;text-align:left;margin:0 0 6px;font-size:1.2rem;min-height:54px}
 .list h2{font-size:1rem;color:var(--mute);margin:18px 0 8px;font-weight:normal}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
-.grid button{font-size:1.2rem;min-height:60px;padding:0}
+.grid button{font-size:1.2rem;min-height:60px;padding:0;text-align:center}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.bgrid button{margin:0!important;min-height:54px;font-size:1.05rem;padding:0 10px;text-align:left;overflow-wrap:anywhere;line-height:1.2}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mg .big{margin:0;min-height:54px;font-size:1.1rem;line-height:1.2;padding:0 8px}.mg .w2{grid-column:1/-1}
 #q{width:100%;min-height:52px;font-size:1.2rem;padding:0 12px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
 .res{display:block;width:100%;text-align:left;margin:8px 0 0;padding:10px 12px;min-height:0;line-height:1.45}
 .res b{display:block;font-size:.95rem;color:var(--mute);font-family:system-ui,sans-serif}
@@ -61,7 +63,7 @@ body.sh main{padding-bottom:70vh}
 #read h1 small{font-size:.5em;color:var(--mute);font-family:system-ui,sans-serif;margin-left:.5em;font-weight:normal}
 .dl{font-family:system-ui,sans-serif;font-size:.85rem;color:var(--mute);margin:6px 2px 4px}
 #sheet .dsp .big{font-size:1.05rem;min-height:54px;line-height:1.2}
-#sheet .dsp .row{margin:0 -4px 8px}
+#sheet .dsp .row{margin:0 -4px 12px}#sheet .dsp .dl{margin-top:6px}
 #sheet .big.on{background:var(--bar);color:var(--barink)}
 .szv{flex:0 0 70px;text-align:center;line-height:54px;font-weight:bold;font-family:system-ui,sans-serif}
 .pb{display:block;height:.8em}.chap.lines .pb{height:.5em}.chap.lines .pb.mid{display:none}
@@ -76,6 +78,7 @@ header button{padding:0 7px;font-size:.9rem;margin:0 2px}#title{padding:0 4px;fo
 #backup h2{font-size:1rem;color:var(--mute);margin:20px 0 8px;font-weight:normal;font-family:system-ui,sans-serif}
 #backup .big{font-size:1.1rem;min-height:56px}#backup p{font-family:system-ui,sans-serif;line-height:1.5;margin:6px 0}
 #backup textarea{width:100%;min-height:110px;font-size:1rem;padding:10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;margin:6px 0 8px}
+.bkwarn{background:var(--hl);border-radius:10px;padding:10px 12px;margin:0 0 12px;font-family:system-ui,sans-serif;line-height:1.4}
 .bkpre{background:var(--btn);border-radius:10px;padding:12px;margin:10px 0;font-family:system-ui,sans-serif;line-height:1.5}
 .bkerr{color:#b3261e;font-family:system-ui,sans-serif;margin:8px 0}[data-theme=night] .bkerr{color:#ff8a80}
 label.big{display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--btn);cursor:pointer;text-align:center}
@@ -90,6 +93,23 @@ label.big{display:flex;align-items:center;justify-content:center;border-radius:1
 .orig .od{white-space:pre-wrap}.fni{margin:0 0 12px}.fni b{font-family:system-ui,sans-serif;color:var(--fn);margin-right:.3em}.fni.on{background:var(--hl);margin-left:-6px;margin-right:-6px;padding:4px 6px;border-radius:6px}.fni .fa{font-style:italic;color:var(--mute)}.fni .fa::after{content:': '}.orig small{display:block;font-family:system-ui,sans-serif;font-size:.62em;color:var(--mute);margin-top:6px}.orig hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 .orig small{display:block;font-family:system-ui,sans-serif;color:var(--mute);font-size:.55em;margin-top:10px}
 #sheet .tabs .big.sn{min-height:46px;font-size:.95rem;font-family:system-ui,sans-serif}
+
+.tyn{font-size:calc(var(--fs,26px)*.72);line-height:1.5}.tyn p{margin:0 0 .8em}.tyn .l1{padding-left:1em}.tyn .l2{padding-left:2em}.tyn .l3{padding-left:3em}
+.tyn .po{padding-left:1.2em;margin:0}.tyn .po2{padding-left:2.4em;margin:0}.tyn blockquote{margin:0 0 .8em;padding-left:1em;border-left:3px solid var(--line)}
+.tyn h3{font-size:1.25em;margin:.2em 0 .6em}.tyn h4{font-size:1.05em;margin:1em 0 .4em}.tyn h5{font-size:1em;margin:.9em 0 .3em;color:var(--mute)}
+.tyn .sc{font-variant:small-caps;letter-spacing:.02em}.tyn .he{font-style:normal}.tyn .rf{color:var(--mute);font-size:.9em}
+.tyn a.x{color:var(--fn);text-decoration:underline;cursor:pointer}
+.tyn .tbx{background:var(--btn);border-radius:10px;padding:10px 12px;margin:0 0 1em}.tyn .tbx h5{margin-top:0}
+.tyn table{border-collapse:collapse;width:100%;font-size:.85em;margin:0 0 1em}.tyn td,.tyn th{border:1px solid var(--line);padding:4px 6px;vertical-align:top}.tyn td p{margin:0}
+.tn{border-top:2px solid var(--line);padding-top:10px;margin-top:14px}.tn:first-of-type{border-top:0;margin-top:0}
+.tn .tl{font-family:system-ui,sans-serif;font-weight:bold;color:var(--mute);font-size:.8em;margin:0 0 4px}
+.tattr{font-family:system-ui,sans-serif;font-size:.78rem;color:var(--mute);line-height:1.45;margin:22px 0 10px}
+.tynbar{display:flex;gap:10px;margin:28px 0 0}.tynbar button{flex:1;min-height:56px;font-size:1rem;font-family:system-ui,sans-serif;line-height:1.2;padding:0 8px}
+#study .big{font-size:1.05rem;min-height:52px}#study h2.st{font-size:1.35rem;margin:14px 0 10px}
+#study .ll button{display:block;width:100%;text-align:left;margin:0 0 6px;min-height:50px;font-size:1.05rem;padding:8px 12px;line-height:1.25}#study .ll small{display:block;font-family:system-ui,sans-serif;color:var(--mute);font-size:.75em}
+#study .az{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px;margin:0 0 12px}#study .az button{min-height:46px;min-width:0;padding:0;font-weight:bold}#study .az button.on{background:var(--bar);color:var(--barink)}
+#study input{width:100%;min-height:50px;font-size:1.1rem;padding:0 12px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin:0 0 10px}
+#study .tabs{margin:0 -4px 12px}#study .tabs .big{min-height:48px;font-size:.92rem}
 </style>
 </head>
 <body>
@@ -105,6 +125,7 @@ label.big{display:flex;align-items:center;justify-content:center;border-radius:1
   <section id="marks" class="panel"></section>
   <section id="backup" class="panel"></section>
   <section id="note" class="panel"></section>
+  <section id="study" class="panel"></section>
   <section id="search" class="panel">
     <input id="q" type="search" placeholder="Search words, e.g. shepherd" autocomplete="off">
     <div id="res"></div>
@@ -139,7 +160,7 @@ async function useVersion(code){
   S.v=code;
 }
 const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-function show(p){closeSheet();if(typeof noteLeave==='function')noteLeave(p);document.body.classList.remove('hh');['read','nav','search','marks','backup','note'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
+function show(p){closeSheet();if(typeof noteLeave==='function')noteLeave(p);document.body.classList.remove('hh');['read','nav','search','marks','backup','note','study'].forEach(x=>$(x).classList.toggle('on',x===p));window.scrollTo(0,0)}
 function applyLook(){document.documentElement.dataset.theme=S.theme;document.documentElement.style.setProperty('--fs',S.fs+'px')}
 function cleanMarks(o){
   const r={};if(!o||typeof o!=='object'||Array.isArray(o))return r;
@@ -199,8 +220,10 @@ function drawChapter(){
     h+='<span class="vs'+mcls(n)+(S.hl===n?' hl':'')+'" id="v'+n+'" data-v="'+n+'">'+(S.vn?'<sup>'+n+'</sup>':'')+body+'</span> '});
   h+='</div>';
   const pv=pageNav(-1),nx=pageNav(1),gap='<span style="flex:1"></span>';
+  h+='<div class="tynbar"><button id="tn-ch">Study notes for this chapter</button><button id="tn-bk">About '+esc(name)+'</button></div>';
   h+='<div class="pager">'+(pv?'<button id="prev">&larr; '+pv[0]+'<small>'+pv[1]+'</small></button>':gap)+(nx?'<button id="next">'+nx[0]+' &rarr;<small>'+nx[1]+'</small></button>':gap)+'</div>';
   $('read').innerHTML=h;
+  $('tn-ch').onclick=()=>stGo(()=>chapterNotes(S.b,S.c),'read');$('tn-bk').onclick=()=>stGo(()=>bookIntro(S.b),'read');
   if($('hintx'))$('hintx').onclick=()=>{store.set('hint','1');$('hint').remove()};
   if(pv)$('prev').onclick=()=>{S.hl=0;pv[2]();read()};if(nx)$('next').onclick=()=>{S.hl=0;nx[2]();read()};
 }
@@ -224,16 +247,18 @@ function step(d){
 let navMode='books';
 function renderBookList(){
   navMode='books';
-  let h='<h2 style="margin-top:0">Bible version</h2><div class="vers">'+VERS.map(v=>'<button data-ver="'+v[0]+'" class="'+(v[0]===S.v?'on':'')+'">'+v[1]+'<small>'+v[2]+'</small></button>').join('')+'</div><button id="tips">How to use this app</button>';
+  let h='<h2 style="margin-top:0">Bible version</h2><div class="vers">'+VERS.map(v=>'<button data-ver="'+v[0]+'" class="'+(v[0]===S.v?'on':'')+'">'+v[1]+'<small>'+v[2]+'</small></button>').join('')+'</div>';
+  h+='<button class="big" id="lib-open" style="min-height:56px;font-size:1.05rem;margin:4px 0 0">Study library: people, themes, dictionary</button>';
   BOOKS.forEach((b,i)=>{
-    if(i===0)h+='<h2>Old Testament</h2>';
-    if(i===39)h+='<h2>New Testament</h2>';
+    if(i===0)h+='<h2>Old Testament</h2><div class="bgrid">';
+    if(i===39)h+='</div><h2>New Testament</h2><div class="bgrid">';
     h+='<button data-b="'+i+'">'+b[0]+'</button>';
   });
+  h+='</div>';
   $('nav').innerHTML=h;
   $('nav').querySelectorAll('button[data-b]').forEach(x=>x.onclick=()=>chapterGrid(+x.dataset.b));
+  $('lib-open').onclick=()=>{LB.q='';stGo(libHome,'nav')};
   $('nav').querySelectorAll('button[data-ver]').forEach(x=>x.onclick=()=>switchVersion(x.dataset.ver));
-  $('tips').onclick=()=>{store.set('hint','');read()};
 }
 function bookList(){renderBookList();show('nav')}
 function chapterGrid(i){
@@ -321,17 +346,19 @@ let lastIdx=-1;
 function menu(p,word,idx){
   if(idx!==undefined)lastIdx=idx;
   lastWord=word;sel={a:p,lo:p,hi:p};paint();
-  $('sheet').innerHTML='<div class="sh-t">'+ref(p,p)+'</div><button class="big" id="m-def">Meaning of &ldquo;'+esc(word)+'&rdquo;</button>'
-    +(S.v==='kjv'?'<button class="big" id="m-orig">Original word (Strong\u2019s)</button>':'')
-    +(fnList(p).length?'<button class="big" id="m-fn">'+(S.v==='kjv'?'Margin notes':'Footnotes')+' on this verse ('+fnList(p).length+')</button>':'')
-    +'<div class="row"><button class="big" id="m-hl">Highlight</button><button class="big" id="m-bm">'+(allBm(p,p)?'Remove bookmark':'Add bookmark')+'</button></div>'
-    +'<button class="big" id="m-note">Add to sermon note</button>'
-    +'<div class="row"><button class="big" id="m-sh">Share verse</button><button class="big" id="m-cp">Copy verse</button></div>'
-    +'<button class="big" id="m-more">Select more verses</button><button class="big close" id="m-x">Close</button>';
+  $('sheet').innerHTML='<div class="sh-t">'+ref(p,p)+'</div><div class="mg"><button class="big w2" id="m-def">Meaning of &ldquo;'+esc(word)+'&rdquo;</button>'
+    +(S.v==='kjv'?'<button class="big w2" id="m-orig">Original word (Strong\u2019s)</button>':'')
+    +(fnList(p).length?'<button class="big w2" id="m-fn">'+(S.v==='kjv'?'Margin notes':'Footnotes')+' on this verse ('+fnList(p).length+')</button>':'')
+    +(()=>{const k=window.TYN_N?tynVerse(S.b,S.c,p).length:-1;return k===0?'':'<button class="big w2" id="m-tn">Study notes'+(k>0?' on this verse ('+k+')':'')+'</button>'})()
+    +'<button class="big" id="m-hl">Highlight</button><button class="big" id="m-bm">'+(allBm(p,p)?'Remove bookmark':'Add bookmark')+'</button>'
+    +'<button class="big" id="m-note">Add to sermon note</button><button class="big" id="m-more">Select more verses</button>'
+    +'<button class="big" id="m-sh">Share verse</button><button class="big" id="m-cp">Copy verse</button>'
+    +'<button class="big close w2" id="m-x">Close</button></div>';
   open();
   $('m-def').onclick=()=>define(p,word);
   if($('m-orig'))$('m-orig').onclick=()=>original(p,word,lastIdx);
   if($('m-fn'))$('m-fn').onclick=()=>showFn(p,-1,()=>menu(p,word));
+  if($('m-tn'))$('m-tn').onclick=()=>{const b=S.b,c=S.c;stGo(()=>verseNotes(b,c,p),'read');S.hl=p};
   $('m-hl').onclick=()=>hlPicker(p,p,()=>menu(p,word));
   $('m-note').onclick=()=>noteTarget(p,p,()=>menu(p,word));
   $('m-bm').onclick=()=>{const on=toggleBm(p,p);closeSheet();toast(on?'Bookmarked '+ref(p,p):'Bookmark removed')};
@@ -344,9 +371,10 @@ function menu(p,word,idx){
 const updRef=()=>{$('selref').textContent=ref(sel.lo,sel.hi)+' — tap verses to extend';$('s-bm').textContent=allBm(sel.lo,sel.hi)?'Remove bookmark':'Bookmark'};
 function selectBar(){
   sel.on=true;
-  $('sheet').innerHTML='<div class="sh-t" id="selref"></div><div class="row"><button class="big" id="s-hl">Highlight</button><button class="big" id="s-bm">Bookmark</button></div>'
-    +'<button class="big" id="s-note">Add to sermon note</button>'
-    +'<div class="row"><button class="big" id="s-sh">Share</button><button class="big" id="s-cp">Copy</button><button class="big close" id="s-x">Cancel</button></div>';
+  $('sheet').innerHTML='<div class="sh-t" id="selref"></div><div class="mg"><button class="big" id="s-hl">Highlight</button><button class="big" id="s-bm">Bookmark</button>'
+    +'<button class="big w2" id="s-note">Add to sermon note</button>'
+    +'<button class="big" id="s-sh">Share</button><button class="big" id="s-cp">Copy</button>'
+    +'<button class="big close w2" id="s-x">Cancel</button></div>';
   open();
   $('s-hl').onclick=()=>hlPicker(sel.lo,sel.hi,selectBar);
   $('s-note').onclick=()=>noteTarget(sel.lo,sel.hi,selectBar);
@@ -356,6 +384,113 @@ function selectBar(){
   $('s-x').onclick=closeSheet;
   updRef();
 }
+
+// ---- Tyndale Open Study Notes + Bible Dictionary (CC BY-SA 4.0)
+const TYN_NOTES_CR='Adapted from Tyndale Open Study Notes. The original work by Tyndale House Publishers is available for free at http://www.tyndaleopenresources.com. © 2022 Tyndale House Publishers. Licensed CC BY-SA 4.0.';
+const TYN_DICT_CR='Adapted from Tyndale Open Bible Dictionary. The original work by Tyndale House Publishers is available for free at http://www.tyndaleopenresources.com. © 2022–2023 Tyndale House Publishers. Licensed CC BY-SA 4.0.';
+const tyl={};
+const tynLoad=f=>tyl[f]||(tyl[f]=loadScript(f).catch(e=>{delete tyl[f];throw e}));
+let ST=[],stFrom='read';
+function stDraw(){show('study');ST[ST.length-1]()}
+function stGo(fn,from){if(from){ST=[];stFrom=from}ST.push(fn);stDraw()}
+function stBack(){ST.pop();if(ST.length){stDraw()}else if(stFrom==='nav')bookList();else read()}
+function stPage(title,body,cr,extra){
+  $('study').innerHTML='<button class="big" id="st-back">&larr; Back</button>'+(title?'<h2 class="st">'+esc(title)+'</h2>':'')+(extra||'')+'<div class="tyn">'+body+'</div><p class="tattr">'+esc(cr||TYN_NOTES_CR)+'</p><button class="big" id="st-x">Back to reading</button>';
+  $('st-back').onclick=stBack;$('st-x').onclick=()=>{ST=[];read()};window.scrollTo(0,0)}
+function stFail(what){
+  $('study').innerHTML='<button class="big" id="st-back">&larr; Back</button><p class="note">'+what+' could not be loaded. Make sure the Tyndale data files were added to the app.</p>';$('st-back').onclick=stBack}
+function stLoading(){$('study').innerHTML='<p class="note">Loading…</p>'}
+$('study').addEventListener('click',e=>{
+  const a=e.target.closest&&e.target.closest('a.x');if(!a)return;e.preventDefault();
+  if(a.dataset.r){const q=a.dataset.r.split('.').map(Number),b=q[0];if(!(b>=0&&b<66))return;
+    const nc=BOOKS[b][1].length,c=Math.min(Math.max(q[1],0),nc-1),vs=BOOKS[b][1][c],v=q[2]<=vs.length&&vs[q[2]-1]?q[2]:0;
+    S.b=b;S.c=c;S.hl=v;ST=[];read()}
+  else if(a.dataset.d)stGo(()=>dictArticle(a.dataset.d))});
+const noteLabel=(lo,hi)=>hi>=999?(lo<=1?'Whole chapter':'From verse '+lo+' on'):lo===hi?'Verse '+lo:'Verses '+lo+'–'+hi;
+const tynFor=(b,c)=>((window.TYN_N&&TYN_N.i[b+'.'+c])||[]);
+const tynVerse=(b,c,v)=>tynFor(b,c).filter(x=>x[1]<=v&&v<=x[2]).sort((x,y)=>(x[2]-x[1])-(y[2]-y[1])||x[1]-y[1]);
+function tnBlock(x,id){return '<div class="tn"'+(id?' id="'+id+'"':'')+'><div class="tl">'+noteLabel(x[1],x[2])+'</div>'+TYN_N.n[x[0]]+'</div>'}
+async function chapterNotes(b,c,focus){
+  stLoading();
+  try{await tynLoad('data-tyn-notes.js')}catch(e){stFail('The study notes');return}
+  const l=tynFor(b,c),nm=BOOKS[b][0]+' '+(c+1);
+  let body=l.length?l.map(x=>tnBlock(x,'tn'+x[1]+'_'+x[0])).join(''):'<p class="note">There are no study notes for this chapter.</p>';
+  stPage('Study notes: '+nm,body,TYN_NOTES_CR,'<button class="big" id="st-intro" style="margin-bottom:10px">About '+esc(BOOKS[b][0])+'</button>');
+  $('st-intro').onclick=()=>stGo(()=>bookIntro(b));
+  if(focus){const e=document.querySelector('#study .tn');if(e)e.scrollIntoView()}
+}
+async function verseNotes(b,c,v){
+  stLoading();
+  try{await tynLoad('data-tyn-notes.js')}catch(e){stFail('The study notes');return}
+  const l=tynVerse(b,c,v);
+  let body=l.length?l.map(x=>tnBlock(x)).join(''):'<p class="note">There are no study notes on this verse.</p>';
+  stPage('Study notes: '+refOf(b,c,v,v),body,TYN_NOTES_CR,'<button class="big" id="st-ch" style="margin-bottom:10px">All notes for '+esc(BOOKS[b][0])+' '+(c+1)+'</button>');
+  $('st-ch').onclick=()=>stGo(()=>chapterNotes(b,c));
+}
+async function bookIntro(b){
+  stLoading();
+  try{await tynLoad('data-tyn-lib.js')}catch(e){stFail('The book introduction');return}
+  const o=(TYN_L.b[b])||{};
+  stPage('About '+BOOKS[b][0],(o.s?'<div class="tbx">'+o.s+'</div>':'')+(o.i||(o.s?'':'<p class="note">No introduction is available for this book.</p>')),TYN_NOTES_CR);
+}
+// library
+const LB={tab:'p',q:'',L:'A'};
+function libHome(){
+  const T=[['p','People'],['t','Themes'],['b','Books'],['d','Dictionary']];
+  $('study').innerHTML='<button class="big" id="st-back">&larr; Back</button><h2 class="st">Study library</h2><div class="tabs">'+T.map(t=>'<button class="big'+(LB.tab===t[0]?' on':'')+'" data-t="'+t[0]+'">'+t[1]+'</button>').join('')+'</div><div id="lb"></div><p class="tattr">'+esc(LB.tab==='d'?TYN_DICT_CR:TYN_NOTES_CR)+'</p>';
+  $('st-back').onclick=stBack;
+  $('study').querySelectorAll('.tabs .big').forEach(b=>b.onclick=()=>{LB.tab=b.dataset.t;LB.q='';libHome()});
+  libBody();window.scrollTo(0,0)}
+async function libBody(){
+  const box=$('lb');
+  if(LB.tab==='b'){
+    box.innerHTML='<div class="bgrid">'+BOOKS.map((b,i)=>'<button data-b="'+i+'">'+b[0]+'</button>').join('')+'</div>';
+    box.querySelectorAll('button').forEach(x=>x.onclick=()=>stGo(()=>bookIntro(+x.dataset.b)));return}
+  if(LB.tab==='d'){
+    box.innerHTML='<p class="note">Loading…</p>';
+    try{await tynLoad('data-tyn-di.js')}catch(e){box.innerHTML='<p class="note">The dictionary could not be loaded. Make sure the Tyndale data files were added to the app.</p>';return}
+    const Ls=[];TYN_DI.forEach(x=>{if(Ls.indexOf(x[2])<0)Ls.push(x[2])});Ls.sort();
+    box.innerHTML='<input id="lb-q" type="search" placeholder="Search the dictionary" value="'+esc(LB.q)+'" autocomplete="off"><div class="az">'+Ls.map(l=>'<button data-l="'+l+'" class="'+(!LB.q&&LB.L===l?'on':'')+'">'+l+'</button>').join('')+'</div><div id="lb-l" class="ll"></div>';
+    const draw=()=>{
+      const q=LB.q.trim().toLowerCase();let l;
+      if(q){l=TYN_DI.filter(x=>x[1].toLowerCase().indexOf(q)>=0).sort((a,b)=>(a[1].toLowerCase().indexOf(q)===0?0:1)-(b[1].toLowerCase().indexOf(q)===0?0:1)||(a[1]<b[1]?-1:1))}
+      else l=TYN_DI.filter(x=>x[2]===LB.L);
+      const tot=l.length;l=l.slice(0,300);
+      $('lb-l').innerHTML=(q?'<p class="note">'+(tot?tot+' article'+(tot>1?'s':'')+(tot>300?' (showing the first 300)':''):'No articles found.')+'</p>':'')+l.map(x=>'<button data-d="'+x[0]+'">'+esc(x[1])+'</button>').join('');
+      $('lb-l').querySelectorAll('button').forEach(x=>x.onclick=()=>stGo(()=>dictArticle(x.dataset.d)));
+      box.querySelectorAll('.az button').forEach(x=>x.classList.toggle('on',!q&&x.dataset.l===LB.L))};
+    draw();
+    let t;$('lb-q').oninput=()=>{LB.q=$('lb-q').value;clearTimeout(t);t=setTimeout(draw,200)};
+    box.querySelectorAll('.az button').forEach(x=>x.onclick=()=>{LB.L=x.dataset.l;LB.q='';$('lb-q').value='';draw()});
+    return}
+  box.innerHTML='<p class="note">Loading…</p>';
+  try{await tynLoad('data-tyn-lib.js')}catch(e){box.innerHTML='<p class="note">The library could not be loaded. Make sure the Tyndale data files were added to the app.</p>';return}
+  const l=TYN_L[LB.tab];
+  box.innerHTML='<input id="lb-q" type="search" placeholder="Filter" value="'+esc(LB.q)+'" autocomplete="off"><div id="lb-l" class="ll"></div>';
+  const draw=()=>{const q=LB.q.trim().toLowerCase();
+    const m=l.map((x,i)=>[x,i]).filter(z=>!q||z[0].t.toLowerCase().indexOf(q)>=0);
+    $('lb-l').innerHTML=m.length?m.map(z=>'<button data-i="'+z[1]+'">'+esc(z[0].t)+(z[0].r?'<small>'+refOf(z[0].r[0],z[0].r[1],z[0].r[2],z[0].r[2])+'</small>':'')+'</button>').join(''):'<p class="note">Nothing found.</p>';
+    $('lb-l').querySelectorAll('button').forEach(x=>x.onclick=()=>stGo(()=>libItem(LB.tab,+x.dataset.i)))};
+  draw();let t;$('lb-q').oninput=()=>{LB.q=$('lb-q').value;clearTimeout(t);t=setTimeout(draw,200)};
+}
+function libItem(k,i){
+  const x=TYN_L[k][i];
+  stPage(x.t,x.h,TYN_NOTES_CR,x.r?'<button class="big" id="li-go" style="margin-bottom:10px">Read '+refOf(x.r[0],x.r[1],x.r[2],x.r[2])+'</button>':'');
+  if(x.r)$('li-go').onclick=()=>{S.b=x.r[0];S.c=Math.min(x.r[1],BOOKS[x.r[0]][1].length-1);S.hl=x.r[2];ST=[];read()};
+}
+async function dictArticle(name){
+  stLoading();
+  let e;
+  try{await tynLoad('data-tyn-di.js');e=TYN_DI.find(x=>x[0]===name);if(!e)throw 0;await tynLoad('data-tyn-d-'+e[2]+'.js')}catch(er){stFail('That dictionary article');return}
+  const t=(window.TYN_D[e[2]]||{})[name];
+  stPage(e[1],t||'<p class="note">This article is missing.</p>',TYN_DICT_CR);
+}
+function tynMatch(word){
+  if(!window.TYN_DI)return[];
+  if(!tynMatch.m){const m={};TYN_DI.forEach(x=>{const k=x[1].replace(/\s*\(.*$/,'').replace(/,.*$/,'').toLowerCase().trim();(m[k]=m[k]||[]).push(x)});tynMatch.m=m}
+  const w=word.toLowerCase(),c=[w,w.replace(/s$/,''),w.replace(/es$/,''),w.replace(/ies$/,'y')],r=[];
+  c.forEach(k=>{(tynMatch.m[k]||[]).forEach(x=>{if(r.indexOf(x)<0)r.push(x)})});
+  return r}
 // ---- Marks screen (bookmarks + highlights, by verse reference so they carry across versions)
 function groupMarks(kind){
   const it=[];
@@ -382,7 +517,7 @@ function bindTabs(){['bm','hl','nt'].forEach(k=>{$('mt-'+k).onclick=()=>{S.mt=k;
 function renderNotesTab(){
   const l=nsorted(),tr=store.get('notes_trash');
   let h=marksTabs()+'<div class="mrow"><span class="dl">'+cword(l.length,'note')+'</span><button id="nt-new">+ New note</button></div>'
-    +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks and notes</button>';
+    +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks and notes</button>'+bkStatus();
   if(!l.length)h+='<p class="note">No notes yet. Tap “+ New note”, or hold your finger on a verse and choose “Add to sermon note”.</p>';
   l.forEach(n=>{const sn=n.body.replace(/\s+/g,' ').trim();h+='<div class="mk"><button class="mkgo" data-id="'+n.id+'"><b>'+esc(ntitle(n))+'</b>'+esc(fdate(n.updated)+(sn?' · '+(sn.length>110?sn.slice(0,110).replace(/\s+\S*$/,'')+'…':sn):''))+'</button></div>'});
   if(l.length)h+='<button class="big" id="nt-all" style="min-height:52px;font-size:1.05rem;margin-top:8px">Share all notes</button>';
@@ -448,7 +583,7 @@ function renderMarks(){
   const g=groupMarks(S.mt),bm=S.mt==='bm';
   let h=marksTabs()
     +'<div class="mrow"><span class="dl">'+g.length+(bm?' bookmark':' highlight')+(g.length===1?'':'s')+'</span><button id="ms-t">Order: '+(S.ms==='new'?'Newest first':'Bible order')+'</button></div>'
-    +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks</button>';
+    +'<button class="big" id="bk-open" style="min-height:52px;font-size:1.05rem;margin-bottom:12px">Back up or restore your marks</button>'+bkStatus();
   if(!g.length)h+='<p class="note">'+(bm?'No bookmarks yet. Hold your finger on a verse and choose “Add bookmark”.':'No highlights yet. Hold your finger on a verse and choose “Highlight”.')+'</p>';
   g.forEach((x,i)=>{h+='<div class="mk"><button class="mkgo" data-i="'+i+'"><b>'+refOf(x.b,x.c,x.lo,x.hi)+(x.col?'<span class="dot" style="--c:var(--h'+x.col+')"></span>':'')+'</b>'+esc(snip(x))+'</button><button class="mkx" data-i="'+i+'">Remove</button></div>'});
   $('marks').innerHTML=h;
@@ -507,13 +642,31 @@ function applyRestore(marks,notes){
   MK=marks;mksave();paintMarks();
   if(notes){NOTES=notes;nsave()}}
 let bkPending=null,bkMsg='';
+function bkStatus(){
+  const n=Object.keys(MK).length+NC();if(!n)return '';
+  const last=store.get('lastbackup'),d=last?Math.floor((Date.now()-Date.parse(last))/864e5):-1;
+  if(last&&d<30)return '';
+  return '<p class="bkwarn" id="bk-warn">'+(last?'Your last backup was '+(d<=1?'a month ago':d+' days ago')+'.':'You have not backed up yet.')+' Tap the button above to save a backup file.</p>'}
+const BKNAME=()=>'bible-app-backup-'+new Date().toISOString().slice(0,10)+'.txt';
+async function saveBackupFile(){
+  const text=backupText(),name=BKNAME(),F=plug('Filesystem'),Sh=plug('Share');
+  if(F&&Sh){
+    let uri;
+    try{const r=await F.writeFile({path:name,data:text,directory:'CACHE',encoding:'utf8'});uri=r.uri}catch(e){toast('Could not make the file. Use Share backup instead.');return}
+    store.set('lastbackup',new Date().toISOString());
+    try{await Sh.share({title:'Bible app backup',files:[uri],dialogTitle:'Save or send your backup file'})}catch(e){}
+    renderBackup();return}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain'}));a.download=name;document.body.appendChild(a);a.click();a.remove();store.set('lastbackup',new Date().toISOString());toast('Backup file saved');renderBackup()}
+  catch(e){toast('Could not save a file here. Use Copy backup.')}
+}
 function renderBackup(){
   const last=store.get('lastbackup'),prev=store.get('marks_prev');
-  const dl=!window.Capacitor;
   let h='<button class="big" id="bk-back">&larr; Back to Marks</button><h2>Back up</h2>'
     +'<p>On this phone: <b>'+ctext(MK,NC())+'</b>.'+(last?'<br>Last backup made: '+esc(last.slice(0,10))+'.':'')+'</p>'
-    +'<button class="big" id="bk-share">Share backup</button><button class="big" id="bk-copy">Copy backup</button>'+(dl?'<button class="big" id="bk-dl">Save backup file</button>':'')
-    +'<p class="note">Send the backup to yourself (email, Messenger, notes app) and keep it. Uninstalling the app erases your marks and notes; updating the app does not.</p>'
+    +'<button class="big" id="bk-dl">Save backup as a file</button>'
+    +'<p class="note">Best for a large collection. Your phone will offer places to put the file: choose Save to device, Files or Drive, or send it to yourself.</p>'
+    +'<div class="mg"><button class="big" id="bk-share">Share as message</button><button class="big" id="bk-copy">Copy as message</button></div>'
+    +'<p class="note">Keep the backup somewhere other than this phone. Uninstalling the app erases your marks and notes; updating the app does not.</p>'
     +'<h2>Restore</h2><label class="big" for="bk-file">Choose a backup file</label><input type="file" id="bk-file" accept=".txt,.json,text/plain,application/json" style="display:none">'
     +'<p class="note">Or paste the backup message here:</p><textarea id="bk-text" placeholder="Paste backup here" aria-label="Paste backup text"></textarea>'
     +'<button class="big" id="bk-read">Read backup</button><div id="bk-out">'+(bkMsg||'')+'</div>'
@@ -522,7 +675,7 @@ function renderBackup(){
   $('bk-back').onclick=showMarks;
   $('bk-share').onclick=async()=>{store.set('lastbackup',new Date().toISOString());await share(backupText());renderBackup()};
   $('bk-copy').onclick=async()=>{store.set('lastbackup',new Date().toISOString());await copy(backupText());renderBackup()};
-  if($('bk-dl'))$('bk-dl').onclick=()=>{try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload())],{type:'application/json'}));a.download='bible-app-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();store.set('lastbackup',new Date().toISOString());toast('Backup file saved')}catch(e){toast('Could not save a file here. Use Copy backup.')}};
+  $('bk-dl').onclick=saveBackupFile;
   $('bk-read').onclick=()=>readBackup($('bk-text').value);
   $('bk-file').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>readBackup(String(r.result));r.onerror=()=>{showBkErr('That file could not be read.')};r.readAsText(f)};
   if($('bk-undo'))$('bk-undo').onclick=()=>{
@@ -596,15 +749,21 @@ async function define(p,word){
       $('d-back').onclick=()=>menu(p,word);$('d-x').onclick=closeSheet;return}
     if($('sheet').className!=='on')return;
   }
-  const r=lookup(word);let tab=r.bib&&!r.gen?'bib':'gen';
+  const r=lookup(word);
+  try{await tynLoad('data-tyn-di.js')}catch(e){}
+  if($('sheet').className!=='on')return;
+  r.tyn=tynMatch(word);
+  let tab=r.gen?'gen':r.bib?'bib':r.tyn.length?'tyn':'gen';
   const draw=()=>{
-    const both=r.gen&&r.bib,body=tab==='bib'?r.bib&&('<small>Bible Dictionary (Easton, 1897)</small>'+esc(r.bib[1])):r.gen&&('<small>Dictionary (Webster, 1828)</small>'+esc(r.gen));
+    const n=(r.gen?1:0)+(r.bib?1:0)+(r.tyn.length?1:0),
+      body=tab==='bib'?r.bib&&('<small>Bible Dictionary (Easton, 1897)</small>'+esc(r.bib[1])):tab==='tyn'?'<small>Tyndale Open Bible Dictionary</small><div class="ll">'+r.tyn.map(x=>'<button class="big" data-d="'+x[0]+'" style="font-size:1.05rem;min-height:52px;margin:0 0 8px">Read: '+esc(x[1])+'</button>').join('')+'</div>':r.gen&&('<small>Dictionary (Webster, 1828)</small>'+esc(r.gen));
     $('sheet').innerHTML='<div class="sh-t">&ldquo;'+esc(word)+'&rdquo;</div>'
-      +(both?'<div class="tabs"><button class="big'+(tab==='gen'?' on':'')+'" id="t-g">Word meaning</button><button class="big'+(tab==='bib'?' on':'')+'" id="t-b">Bible dictionary</button></div>':'')
+      +(n>1?'<div class="tabs">'+(r.gen?'<button class="big'+(tab==='gen'?' on':'')+'" id="t-g">Word meaning</button>':'')+(r.bib?'<button class="big'+(tab==='bib'?' on':'')+'" id="t-b">Bible dictionary</button>':'')+(r.tyn.length?'<button class="big'+(tab==='tyn'?' on':'')+'" id="t-t">Tyndale</button>':'')+'</div>':'')
       +'<div class="def">'+(body||'No entry was found for this word.')+'</div>'
       +'<div class="row"><button class="big" id="d-back">Back</button><button class="big close" id="d-x">Close</button></div>';
     open();
-    if(both){$('t-g').onclick=()=>{tab='gen';draw()};$('t-b').onclick=()=>{tab='bib';draw()}}
+    if($('t-g'))$('t-g').onclick=()=>{tab='gen';draw()};if($('t-b'))$('t-b').onclick=()=>{tab='bib';draw()};if($('t-t'))$('t-t').onclick=()=>{tab='tyn';draw()};
+    $('sheet').querySelectorAll('.def button[data-d]').forEach(b=>b.onclick=()=>{const d=b.dataset.d;stGo(()=>dictArticle(d),'read')});
     $('d-back').onclick=()=>menu(p,word);$('d-x').onclick=closeSheet;
   };
   draw();
@@ -624,7 +783,6 @@ function drawDisplay(){
     +'<div class="dl">Layout</div>'+seg([['lines','One verse per line'],['para','Paragraph']],S.layout,'data-lay')
     +'<div class="dl">Show</div><div class="row"><button class="big'+(S.vn?' on':'')+'" id="dp-vn">Verse numbers: '+(S.vn?'On':'Off')+'</button><button class="big'+(S.ch?' on':'')+'" id="dp-ch">Chapter heading: '+(S.ch?'On':'Off')+'</button></div>'
     +'<div class="row"><button class="big'+(S.sh?' on':'')+'" id="dp-sh">Headings (BSB): '+(S.sh?'On':'Off')+'</button><button class="big'+(S.fn?' on':'')+'" id="dp-fn">Note markers: '+(S.fn?'On':'Off')+'</button></div>'
-    +'<div class="dl">Bible version</div>'+seg(VERS.map(v=>[v[0],v[1]]),S.v,'data-dv')
     +'</div><button class="big close" id="dp-x">Close</button>';
   $('dp-sm').onclick=()=>setPref('fs',Math.max(16,S.fs-2));
   $('dp-bg').onclick=()=>setPref('fs',Math.min(48,S.fs+2));
@@ -634,7 +792,6 @@ function drawDisplay(){
   $('dp-ch').onclick=()=>setPref('ch',!S.ch);
   $('dp-sh').onclick=()=>setPref('sh',!S.sh);
   $('dp-fn').onclick=()=>setPref('fn',!S.fn);
-  $('sheet').querySelectorAll('[data-dv]').forEach(b=>b.onclick=()=>dispVersion(b.dataset.dv));
   $('dp-x').onclick=closeSheet;
 }
 function setPref(k,v){S[k]=v;save();applyLook();refreshScreen();drawDisplay()}
@@ -664,7 +821,7 @@ rd.addEventListener('click',e=>{
   const p=e.target.closest('.vs');if(!p)return;
   const v=+p.dataset.v;sel.lo=Math.min(sel.a,v);sel.hi=Math.max(sel.a,v);paint();updRef();
 });
-try{const A=plug('App');if(A)A.addListener('backButton',()=>{if($('sheet').className==='on')closeSheet();else if(!$('read').classList.contains('on'))read();else A.exitApp()})}catch(e){}
+try{const A=plug('App');if(A)A.addListener('backButton',()=>{if($('sheet').className==='on')closeSheet();else if($('study').classList.contains('on'))stBack();else if(!$('read').classList.contains('on'))read();else A.exitApp()})}catch(e){}
 function pageNav(d){
   const nm=BOOKS[S.b][0],last=BOOKS[S.b][1].length-1;
   if(d<0){
